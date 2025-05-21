@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>Photo Gallery | Grand Horizon</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #0d4a9d;
+      --secondary: #0a1a2b;
+      --accent: #ffc107;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+      color: white;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    /* Header Styles */
+    header {
+      background: rgba(10, 26, 43, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+    
+    .logo {
+      font-weight: 700;
+      font-size: 1.75rem;
+      background: linear-gradient(to right, var(--primary), #3a7bd5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    /* Gallery Styles */
+    .gallery-item {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .gallery-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(13, 74, 157, 0.3);
+      border-color: rgba(13, 74, 157, 0.5);
+    }
+    
+    .gallery-item img {
+      transition: transform 0.5s ease;
+    }
+    
+    .gallery-item:hover img {
+      transform: scale(1.05);
+    }
+    
+    .gallery-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(10, 26, 43, 0.9), transparent);
+      padding: 1.5rem;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .gallery-item:hover .gallery-caption {
+      opacity: 1;
+    }
+    
+    /* Filter Buttons */
+    .filter-btn {
+      transition: all 0.3s;
+      border-radius: 8px;
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .filter-btn:hover, .filter-btn.active {
+      background: linear-gradient(135deg, var(--primary) 0%, #1a5cb0 100%);
+      border-color: transparent;
+    }
+    
+    /* Typography */
+    h1, h2, h3, h4 {
+      font-weight: 700;
+      color: white;
+      margin-bottom: 1.5rem;
+    }
+    
+    h2 {
+      font-size: 2rem;
+      position: relative;
+      display: inline-block;
+    }
+    
+    h2:after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: var(--primary);
+      border-radius: 3px;
+    }
+    
+    p {
+      color: rgba(255, 255, 255, 0.85);
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      h2 {
+        font-size: 1.75rem;
+      }
+      
+      .container {
+        padding: 0 15px;
+      }
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+  <!-- Header Section -->
+  <header class="py-4">
+    <div class="container flex items-center justify-between">
+      <a href="index.html" class="logo">Grand Horizon</a>
+      
+      <nav class="hidden md:flex space-x-6 lg:space-x-8">
+        <a href="index.html">Home</a>
+        <a href="rooms.html">Rooms</a>
+        <a href="gallery.html" class="text-blue-400">Gallery</a>
+        <a href="news.html">News</a>
+        <a href="index.html#reviews">Reviews</a>
+      </nav>
+      
+      <div class="flex items-center space-x-4">
+        <a href="login.html" class="text-white hover:text-blue-400 transition">Login</a>
+        <button id="menu-btn" class="md:hidden text-white focus:outline-none" onclick="toggleMobileMenu()">
+          <i class="fas fa-bars text-2xl"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="fixed inset-0 z-40 md:hidden opacity-0 invisible transition-all duration-400 transform translate-x-full bg-[#0a1a2b]">
+    <div class="flex justify-end p-6">
+      <button id="close-menu" class="text-white text-3xl focus:outline-none hover:text-blue-400 transition" onclick="toggleMobileMenu()">&times;</button>
+    </div>
+    <nav class="flex flex-col items-center space-y-8 mt-12 text-xl">
+      <a href="index.html" class="text-white hover:text-blue-400 transition" onclick="toggleMobileMenu()">Home</a>
+      <a href="rooms.html" class="text-white hover:text-blue-400 transition" onclick="toggleMobileMenu()">Rooms</a>
+      <a href="gallery.html" class="text-blue-400 hover:text-blue-300 transition" onclick="toggleMobileMenu()">Gallery</a>
+      <a href="news.html" class="text-white hover:text-blue-400 transition" onclick="toggleMobileMenu()">News</a>
+      <a href="index.html#reviews" class="text-white hover:text-blue-400 transition" onclick="toggleMobileMenu()">Reviews</a>
+      <div class="pt-8 border-t border-gray-700 w-3/4 text-center">
+        <a href="login.html" class="text-blue-400 hover:underline"><i class="fas fa-sign-in-alt mr-2"></i>Login</a>
+      </div>
+    </nav>
+  </div>
+
+  <main class="flex-grow pt-24 pb-12">
+    <div class="container">
+      <h1 class="text-3xl md:text-4xl font-bold mb-2 text-center">Our Photo Gallery</h1>
+      <p class="text-gray-400 text-center max-w-2xl mx-auto mb-10">Explore the beauty and elegance of Grand Horizon through our stunning visual collection</p>
+      
+      <!-- Gallery Filters -->
+      <div class="flex flex-wrap justify-center gap-3 mb-12">
+        <button class="filter-btn active">All</button>
+        <button class="filter-btn">Rooms</button>
+        <button class="filter-btn">Dining</button>
+        <button class="filter-btn">Spa</button>
+        <button class="filter-btn">Pool</button>
+        <button class="filter-btn">Events</button>
+        <button class="filter-btn">Views</button>
+      </div>
+      
+      <!-- Masonry Gallery Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Image 1 -->
+        <div class="gallery-item">
+          <img src="https://storage.googleapis.com/a1aa/image/e022416c-bc69-4f6a-18de-507fcbb81610.jpg" alt="Luxury Lobby" class="w-full h-full object-cover">
+          <div class="gallery-caption">
+            <h3 class="text-white font-bold">Grand Lobby</h3>
+            <p class="text-gray-300 text-sm">Our magnificent lobby with stunning architectural details</p>
+          </div>
+        </div>
+        
+        <!-- Image 2 -->
+        <div class="gallery-item">
+          <img src="https://storage.googleapis.com/a1aa/image/f5213fef-8b59-435c-10d3-b0ff586b7cee.jpg" alt="Infinity Pool" class="w-full h-full object-cover">
+          <div class="gallery-caption">
+            <h3 class="text-white font-bold">Infinity Pool</h3>
+            <p class="text-gray-300 text-sm">Stunning rooftop pool with panoramic city views</p>
+          </div>
+        </div>
+        
+        <!-- Image 3 -->
+        <div class="gallery-item">
+          <img src="https://storage.googleapis.com/a1aa/image/162f504c-778e-41a9-2390-625ceda4cdda.jpg" alt="Fine Dining" class="w-full h-full object-cover">
+          <div class="gallery-caption">
+            <h3 class="text-white font-bold">Gourmet Restaurant</h3>
+            <p class="text-gray-300 text-sm">Michelin-star dining experience with world-class chefs</p>
+          </div>
+        </div>
+        
+        <!-- Image 4 -->
+        <div class="gallery-item">
+          <img src="https://storage.googleapis.com/a1aa/image/0bc8d64e-cefe-4031-6ff7-09de60081d05.jpg" alt="Spa Center" class="w-full h-full object-cover">
+          <div class="gallery-caption">
+            <h3 class="text-white font-bold">Serenity Spa</h3>
+            <p class="text-gray-300 text-sm">Ultimate relaxation with our premium spa treatments</p>
+          </div>
+        </div>
+        
+        <!-- Image 5 -->
+        <div class="gallery-item">
+          <img src="https://storage.googleapis.com/a1aa/image/7cdea077-9c8f-43de-4907-975d232c11b5.jpg" alt="Conference Room" class="w-full h-full object-cover">
+          <div class="gallery-caption">
+            <h3 class="text-white font-bold">Business Center</h3>
+            <p class="text-gray-300 text-sm">State-of-the-art conference facilities for your meetings</p>
+          </div>
+        </div>
+        
+        <!-- Image 6 -->
+        <div class="gallery-item">
+          <img src="https://storage.googleapis.com/a1aa/image/df2e3f89-3b7e-42e8-0e07-e74086d0585e.jpg" alt="Ocean View" class="w-full h-full object-cover">
+          <div class="gallery-caption">
+            <h3 class="text-white font-bold">Ocean View Suite</h3>
+            <p class="text-gray-300 text-sm">Breathtaking views from our premium accommodations</p>
+          </div>
+        </div>
+        
+        <!-- Image 7 -->
+        <div class="gallery-item">
+          <img src="https://storage.googleapis.com/a1aa/image/193f3e74-6b2c-4095-64db-44d141128dde.jpg" alt="Executive Lounge" class="w-full h-full object-cover">
+          <div class="gallery-caption">
+            <h3 class="text-white font-bold">Executive Lounge</h3>
+            <p class="text-gray-300 text-sm">Exclusive area for our VIP guests</p>
+          </div>
+        </div>
+        
+        <!-- Image 8 -->
+        <div class="gallery-item">
+          <img src="https://storage.googleapis.com/a1aa/image/846ff145-e268-4a54-f1d8-c038cf5c88b2.jpg" alt="Wedding Event" class="w-full h-full object-cover">
+          <div class="gallery-caption">
+            <h3 class="text-white font-bold">Wedding Venue</h3>
+            <p class="text-gray-300 text-sm">Elegant spaces for your special occasions</p>
+          </div>
+        </div>
+        
+        <!-- Image 9 -->
+        <div class="gallery-item">
+          <img src="https://storage.googleapis.com/a1aa/image/65defebe-83ed-4aa8-5d07-5a123f37da30.jpg" alt="Gym Facility" class="w-full h-full object-cover">
+          <div class="gallery-caption">
+            <h3 class="text-white font-bold">Fitness Center</h3>
+            <p class="text-gray-300 text-sm">Premium equipment for your workout routine</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Pagination -->
+      <div class="flex justify-center mt-12">
+        <nav class="flex items-center space-x-2">
+          <button class="w-10 h-10 flex items-center justify-center rounded-full bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.1)] transition">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button class="w-10 h-10 flex items-center justify-center rounded-full bg-blue-500 text-white">1</button>
+          <button class="w-10 h-10 flex items-center justify-center rounded-full bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.1)] transition">2</button>
+          <button class="w-10 h-10 flex items-center justify-center rounded-full bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.1)] transition">3</button>
+          <button class="w-10 h-10 flex items-center justify-center rounded-full bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.1)] transition">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </nav>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer Section -->
+  <footer class="bg-[#0a1a2b] py-12 mt-auto">
+    <div class="container">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <div>
+          <h3 class="text-white text-lg font-bold mb-4">Grand Horizon</h3>
+          <p class="text-gray-400 text-sm">Luxury accommodations with world-class amenities in the heart of the city.</p>
+          <div class="flex space-x-4 mt-4">
+            <a href="#" class="text-gray-400 hover:text-blue-400 transition" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="text-gray-400 hover:text-blue-400 transition" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="text-gray-400 hover:text-blue-400 transition" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-white text-lg font-bold mb-4">Quick Links</h3>
+          <ul class="space-y-2">
+            <li><a href="index.html" class="text-gray-400 hover:text-blue-400 text-sm transition">Home</a></li>
+            <li><a href="rooms.html" class="text-gray-400 hover:text-blue-400 text-sm transition">Rooms & Suites</a></li>
+            <li><a href="gallery.html" class="text-blue-400 hover:text-blue-300 text-sm transition">Photo Gallery</a></li>
+            <li><a href="news.html" class="text-gray-400 hover:text-blue-400 text-sm transition">Hotel News</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-white text-lg font-bold mb-4">Contact Us</h3>
+          <ul class="space-y-2 text-gray-400 text-sm">
+            <li class="flex items-start">
+              <i class="fas fa-map-marker-alt mt-1 mr-2 text-blue-400"></i>
+              <span>123 Hotel Street, City, Country</span>
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-phone-alt mr-2 text-blue-400"></i>
+              <span>+1 234 567 8900</span>
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-envelope mr-2 text-blue-400"></i>
+              <span>info@grandhorizon.com</span>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-white text-lg font-bold mb-4">Opening Hours</h3>
+          <ul class="space-y-2 text-gray-400 text-sm">
+            <li class="flex justify-between">
+              <span>Monday - Friday:</span>
+              <span>24 hours</span>
+            </li>
+            <li class="flex justify-between">
+              <span>Saturday - Sunday:</span>
+              <span>24 hours</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 pt-6 flex flex-col md:flex-row justify-between items-center text-gray-400 text-sm">
+        <p>&copy; 2024 Grand Horizon Hotel. All rights reserved.</p>
+        <div class="flex space-x-4 mt-4 md:mt-0">
+          <a href="#" class="hover:text-blue-400 transition">Privacy Policy</a>
+          <a href="#" class="hover:text-blue-400 transition">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button id="back-to-top" class="fixed bottom-8 right-8 w-12 h-12 rounded-full flex items-center justify-center hidden bg-gradient-to-br from-[#0d4a9d] to-[#1a5cb0] text-white shadow-lg hover:shadow-xl transition-all">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <script>
+    // Mobile menu toggle
+    function toggleMobileMenu() {
+      const mobileMenu = document.getElementById('mobile-menu');
+      mobileMenu.classList.toggle('opacity-0');
+      mobileMenu.classList.toggle('invisible');
+      mobileMenu.classList.toggle('translate-x-full');
+      
+      // Toggle body scroll
+      if (!mobileMenu.classList.contains('opacity-0')) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = 'auto';
+      }
+    }
+    
+    // Gallery filter buttons
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        // Here you would typically filter the gallery items
+      });
+    });
+    
+    // Back to top button
+    const backToTopButton = document.getElementById('back-to-top');
+    
+    if (backToTopButton) {
+      window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+          backToTopButton.classList.remove('hidden');
+          backToTopButton.classList.add('flex');
+        } else {
+          backToTopButton.classList.add('hidden');
+          backToTopButton.classList.remove('flex');
+        }
+      });
+      
+      backToTopButton.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+  </script>
+</body>
+</html>

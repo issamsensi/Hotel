@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>My Account | Grand Horizon</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #0d4a9d;
+      --secondary: #0a1a2b;
+      --accent: #ffc107;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+      color: white;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    /* Header Styles */
+    header {
+      background: rgba(10, 26, 43, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+    
+    .logo {
+      font-weight: 700;
+      font-size: 1.75rem;
+      background: linear-gradient(to right, var(--primary), #3a7bd5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    /* Account Navigation */
+    .account-nav {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(8px);
+      border-radius: 12px;
+    }
+    
+    .account-nav a {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      color: rgba(255, 255, 255, 0.8);
+      transition: all 0.3s;
+    }
+    
+    .account-nav a:hover {
+      color: white;
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .account-nav a.active {
+      color: white;
+      background: linear-gradient(135deg, var(--primary) 0%, #1a5cb0 100%);
+    }
+    
+    /* Card Styles */
+    .account-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+    }
+    
+    /* Booking Card */
+    .booking-card {
+      transition: all 0.3s;
+      border-left: 4px solid var(--primary);
+    }
+    
+    .booking-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(13, 74, 157, 0.3);
+    }
+    
+    /* Button Styles */
+    .btn {
+      transition: all 0.3s;
+      transform: translateY(0);
+      background: linear-gradient(135deg, var(--primary) 0%, #1a5cb0 100%);
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      padding: 12px 24px;
+    }
+    
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(13, 74, 157, 0.4);
+      background: linear-gradient(135deg, #1a5cb0 0%, var(--primary) 100%);
+    }
+    
+    .btn:active {
+      transform: translateY(1px);
+    }
+    
+    /* Typography */
+    h1, h2, h3, h4 {
+      font-weight: 700;
+      color: white;
+      margin-bottom: 1.5rem;
+    }
+    
+    h2 {
+      font-size: 2rem;
+      position: relative;
+      display: inline-block;
+    }
+    
+    h2:after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: var(--primary);
+      border-radius: 3px;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      h2 {
+        font-size: 1.75rem;
+      }
+      
+      .container {
+        padding: 0 15px;
+      }
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+  <!-- Header Section -->
+  <header class="py-4">
+    <div class="container flex items-center justify-between">
+      <a href="index.html" class="logo">Grand Horizon</a>
+      
+      <nav class="hidden md:flex space-x-6 lg:space-x-8">
+        <a href="index.html">Home</a>
+        <a href="rooms.html">Rooms</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="news.html">News</a>
+        <a href="index.html#reviews">Reviews</a>
+      </nav>
+      
+      <div class="flex items-center space-x-4">
+        <a href="account.html" class="text-blue-400 hover:text-blue-300 transition">My Account</a>
+        <button id="menu-btn" class="md:hidden text-white focus:outline-none" onclick="toggleMobileMenu()">
+          <i class="fas fa-bars text-2xl"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="fixed inset-0 z-40 md:hidden opacity-0 invisible transition-all duration-400 transform translate-x-full bg-[#0a1a2b]">
+    <div class="flex justify-end p-6">
+      <button id="close-menu" class="text-white text-3xl focus:outline-none hover:text-blue-400 transition" onclick="toggleMobileMenu()">&times;</button>
+    </div>
+    <nav class="flex flex-col items-center space-y-8 mt-12 text-xl">
+      <a href="index.html" class="text-white hover:text-blue-400 transition" onclick="toggleMobileMenu()">Home</a>
+      <a href="rooms.html" class="text-white hover:text-blue-400 transition" onclick="toggleMobileMenu()">Rooms</a>
+      <a href="gallery.html" class="text-white hover:text-blue-400 transition" onclick="toggleMobileMenu()">Gallery</a>
+      <a href="news.html" class="text-white hover:text-blue-400 transition" onclick="toggleMobileMenu()">News</a>
+      <a href="index.html#reviews" class="text-white hover:text-blue-400 transition" onclick="toggleMobileMenu()">Reviews</a>
+      <div class="pt-8 border-t border-gray-700 w-3/4 text-center">
+        <a href="account.html" class="text-blue-400 hover:underline"><i class="fas fa-user mr-2"></i>My Account</a>
+      </div>
+    </nav>
+  </div>
+
+  <main class="flex-grow pt-24 pb-12">
+    <div class="container">
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <!-- Account Navigation -->
+        <div class="account-nav rounded-lg overflow-hidden h-fit sticky top-24">
+          <div class="p-4 border-b border-gray-700">
+            <div class="flex items-center">
+              <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User" class="w-12 h-12 rounded-full mr-3">
+              <div>
+                <h3 class="font-semibold">Sarah Johnson</h3>
+                <p class="text-gray-400 text-sm">Member since 2022</p>
+              </div>
+            </div>
+          </div>
+          <nav>
+            <a href="#" class="active">
+              <i class="fas fa-user-circle mr-3"></i> Profile
+            </a>
+            <a href="#">
+              <i class="fas fa-calendar-alt mr-3"></i> My Bookings
+            </a>
+            <a href="#">
+              <i class="fas fa-heart mr-3"></i> Wishlist
+            </a>
+            <a href="#">
+              <i class="fas fa-star mr-3"></i> Reviews
+            </a>
+            <a href="#">
+              <i class="fas fa-cog mr-3"></i> Settings
+            </a>
+            <a href="#">
+              <i class="fas fa-sign-out-alt mr-3"></i> Logout
+            </a>
+          </nav>
+        </div>
+        
+        <!-- Account Content -->
+        <div class="lg:col-span-3">
+          <h1 class="text-2xl md:text-3xl font-bold mb-6">My Account</h1>
+          
+          <!-- Profile Card -->
+          <div class="account-card p-6 mb-8">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+              <h2 class="mb-4 md:mb-0">Profile Information</h2>
+              <button class="btn py-2 px-4 text-sm md:w-auto w-full">
+                <i class="fas fa-pen mr-2"></i> Edit Profile
+              </button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-medium mb-2">First Name</label>
+                <div class="bg-[rgba(255,255,255,0.1)] p-3 rounded">Sarah</div>
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-2">Last Name</label>
+                <div class="bg-[rgba(255,255,255,0.1)] p-3 rounded">Johnson</div>
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-2">Email</label>
+                <div class="bg-[rgba(255,255,255,0.1)] p-3 rounded">sarah.johnson@example.com</div>
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-2">Phone</label>
+                <div class="bg-[rgba(255,255,255,0.1)] p-3 rounded">+1 (555) 123-4567</div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Upcoming Bookings -->
+          <div class="account-card p-6 mb-8">
+            <h2 class="mb-6">Upcoming Bookings</h2>
+            
+            <div class="space-y-4">
+              <!-- Booking 1 -->
+              <div class="booking-card bg-[rgba(255,255,255,0.05)] p-4 rounded">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
+                  <div>
+                    <h3 class="font-semibold">Deluxe Room</h3>
+                    <p class="text-gray-400 text-sm">Booking #GH-2024-0567</p>
+                  </div>
+                  <span class="bg-green-500 text-white text-xs px-2 py-1 rounded mt-2 md:mt-0">Confirmed</span>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-3">
+                  <div>
+                    <label class="block text-sm font-medium mb-1">Check-In</label>
+                    <p>May 15, 2024</p>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium mb-1">Check-Out</label>
+                    <p>May 20, 2024</p>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium mb-1">Total</label>
+                    <p>$678.00</p>
+                  </div>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                  <a href="#" class="text-blue-400 hover:underline text-sm mb-2 sm:mb-0">
+                    <i class="fas fa-file-invoice mr-1"></i> View Invoice
+                  </a>
+                  <div class="flex space-x-2">
+                    <button class="bg-[rgba(255,255,255,0.1)] hover:bg-[rgba(255,255,255,0.2)] px-3 py-1 rounded text-sm transition">
+                      Modify
+                    </button>
+                    <button class="bg-red-500 hover:bg-red-600 px-3 py-1 rounded text-sm transition">
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Booking 2 -->
+              <div class="booking-card bg-[rgba(255,255,255,0.05)] p-4 rounded">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
+                  <div>
+                    <h3 class="font-semibold">Executive Suite</h3>
+                    <p class="text-gray-400 text-sm">Booking #GH-2024-0789</p>
+                  </div>
+                  <span class="bg-blue-500 text-white text-xs px-2 py-1 rounded mt-2 md:mt-0">Pending</span>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-3">
+                  <div>
+                    <label class="block text-sm font-medium mb-1">Check-In</label>
+                    <p>June 10, 2024</p>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium mb-1">Check-Out</label>
+                    <p>June 15, 2024</p>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium mb-1">Total</label>
+                    <p>$1,120.00</p>
+                  </div>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                  <a href="#" class="text-blue-400 hover:underline text-sm mb-2 sm:mb-0">
+                    <i class="fas fa-file-invoice mr-1"></i> View Invoice
+                  </a>
+                  <div class="flex space-x-2">
+                    <button class="bg-[rgba(255,255,255,0.1)] hover:bg-[rgba(255,255,255,0.2)] px-3 py-1 rounded text-sm transition">
+                      Modify
+                    </button>
+                    <button class="bg-red-500 hover:bg-red-600 px-3 py-1 rounded text-sm transition">
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <button class="btn w-full mt-6">
+              <i class="fas fa-search mr-2"></i> View All Bookings
+            </button>
+          </div>
+          
+          <!-- Preferences -->
+          <div class="account-card p-6">
+            <h2 class="mb-6">My Preferences</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div>
+                <label class="block text-sm font-medium mb-2">Room Preferences</label>
+                <div class="space-y-2">
+                  <div class="flex items-center">
+                    <input type="checkbox" id="high-floor" class="mr-2" checked>
+                    <label for="high-floor">High floor</label>
+                  </div>
+                  <div class="flex items-center">
+                    <input type="checkbox" id="away-elevator" class="mr-2">
+                    <label for="away-elevator">Away from elevator</label>
+                  </div>
+                  <div class="flex items-center">
+                    <input type="checkbox" id="quiet-room" class="mr-2" checked>
+                    <label for="quiet-room">Quiet room</label>
+                  </div>
+                </div>
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium mb-2">Pillow Type</label>
+                <select class="w-full">
+                  <option>Standard</option>
+                  <option selected>Firm</option>
+                  <option>Soft</option>
+                  <option>Memory Foam</option>
+                </select>
+              </div>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium mb-2">Special Requests</label>
+              <textarea rows="3" class="w-full" placeholder="Any special requests for your stay..."></textarea>
+            </div>
+            
+            <button class="btn mt-4">
+              <i class="fas fa-save mr-2"></i> Save Preferences
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer Section -->
+  <footer class="bg-[#0a1a2b] py-12 mt-auto">
+    <div class="container">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <div>
+          <h3 class="text-white text-lg font-bold mb-4">Grand Horizon</h3>
+          <p class="text-gray-400 text-sm">Luxury accommodations with world-class amenities in the heart of the city.</p>
+          <div class="flex space-x-4 mt-4">
+            <a href="#" class="text-gray-400 hover:text-blue-400 transition" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="text-gray-400 hover:text-blue-400 transition" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="text-gray-400 hover:text-blue-400 transition" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-white text-lg font-bold mb-4">Quick Links</h3>
+          <ul class="space-y-2">
+            <li><a href="index.html" class="text-gray-400 hover:text-blue-400 text-sm transition">Home</a></li>
+            <li><a href="rooms.html" class="text-gray-400 hover:text-blue-400 text-sm transition">Rooms & Suites</a></li>
+            <li><a href="gallery.html" class="text-gray-400 hover:text-blue-400 text-sm transition">Photo Gallery</a></li>
+            <li><a href="news.html" class="text-gray-400 hover:text-blue-400 text-sm transition">Hotel News</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-white text-lg font-bold mb-4">Contact Us</h3>
+          <ul class="space-y-2 text-gray-400 text-sm">
+            <li class="flex items-start">
+              <i class="fas fa-map-marker-alt mt-1 mr-2 text-blue-400"></i>
+              <span>123 Hotel Street, City, Country</span>
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-phone-alt mr-2 text-blue-400"></i>
+              <span>+1 234 567 8900</span>
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-envelope mr-2 text-blue-400"></i>
+              <span>info@grandhorizon.com</span>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-white text-lg font-bold mb-4">Opening Hours</h3>
+          <ul class="space-y-2 text-gray-400 text-sm">
+            <li class="flex justify-between">
+              <span>Monday - Friday:</span>
+              <span>24 hours</span>
+            </li>
+            <li class="flex justify-between">
+              <span>Saturday - Sunday:</span>
+              <span>24 hours</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 pt-6 flex flex-col md:flex-row justify-between items-center text-gray-400 text-sm">
+        <p>&copy; 2024 Grand Horizon Hotel. All rights reserved.</p>
+        <div class="flex space-x-4 mt-4 md:mt-0">
+          <a href="#" class="hover:text-blue-400 transition">Privacy Policy</a>
+          <a href="#" class="hover:text-blue-400 transition">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button id="back-to-top" class="fixed bottom-8 right-8 w-12 h-12 rounded-full flex items-center justify-center hidden bg-gradient-to-br from-[#0d4a9d] to-[#1a5cb0] text-white shadow-lg hover:shadow-xl transition-all">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <script>
+    // Mobile menu toggle
+    function toggleMobileMenu() {
+      const mobileMenu = document.getElementById('mobile-menu');
+      mobileMenu.classList.toggle('opacity-0');
+      mobileMenu.classList.toggle('invisible');
+      mobileMenu.classList.toggle('translate-x-full');
+      
+      // Toggle body scroll
+      if (!mobileMenu.classList.contains('opacity-0')) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = 'auto';
+      }
+    }
+    
+    // Back to top button
+    const backToTopButton = document.getElementById('back-to-top');
+    
+    if (backToTopButton) {
+      window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+          backToTopButton.classList.remove('hidden');
+          backToTopButton.classList.add('flex');
+        } else {
+          backToTopButton.classList.add('hidden');
+          backToTopButton.classList.remove('flex');
+        }
+      });
+      
+      backToTopButton.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>Admin Dashboard | Grand Horizon</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --primary: #0d4a9d;
+      --secondary: #0a1a2b;
+      --accent: #ffc107;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f5f7fa;
+      color: #333;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+    
+    /* Sidebar Styles */
+    .sidebar {
+      background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+      color: white;
+      transition: all 0.3s;
+    }
+    
+    .sidebar-link {
+      transition: all 0.3s;
+      color: rgba(255, 255, 255, 0.8);
+    }
+    
+    .sidebar-link:hover, .sidebar-link.active {
+      color: white;
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .sidebar-link.active {
+      border-left: 4px solid var(--accent);
+    }
+    
+    /* Card Styles */
+    .dashboard-card {
+      transition: all 0.3s;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+    
+    .dashboard-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Table Styles */
+    .dashboard-table {
+      background: white;
+    }
+    
+    .dashboard-table th {
+      background: #f8fafc;
+      font-weight: 600;
+    }
+    
+    .dashboard-table tr:nth-child(even) {
+      background: #f8fafc;
+    }
+    
+    /* Status Badges */
+    .status-badge {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      font-weight: 600;
+    }
+    
+    .status-pending {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    
+    .status-confirmed {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    
+    .status-cancelled {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+    
+    .status-completed {
+      background: #e0e7ff;
+      color: #3730a3;
+    }
+  </style>
+</head>
+<body class="flex">
+  <!-- Sidebar -->
+  <div class="sidebar w-64 min-h-screen fixed hidden md:block">
+    <div class="p-4 border-b border-gray-700">
+      <h1 class="text-xl font-bold flex items-center">
+        <i class="fas fa-hotel mr-2"></i> Grand Horizon
+      </h1>
+      <p class="text-sm text-gray-300">Admin Dashboard</p>
+    </div>
+    
+    <nav class="p-4">
+      <div class="mb-6">
+        <div class="flex items-center mb-4">
+          <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Admin" class="w-10 h-10 rounded-full mr-3">
+          <div>
+            <h3 class="font-semibold">Admin User</h3>
+            <p class="text-xs text-gray-400">Super Admin</p>
+          </div>
+        </div>
+      </div>
+      
+      <ul class="space-y-2">
+        <li>
+          <a href="#" class="sidebar-link active flex items-center p-3 rounded">
+            <i class="fas fa-tachometer-alt mr-3"></i> Dashboard
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-link flex items-center p-3 rounded">
+            <i class="fas fa-bed mr-3"></i> Rooms Management
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-link flex items-center p-3 rounded">
+            <i class="fas fa-calendar-check mr-3"></i> Bookings
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-link flex items-center p-3 rounded">
+            <i class="fas fa-users mr-3"></i> Customers
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-link flex items-center p-3 rounded">
+            <i class="fas fa-dollar-sign mr-3"></i> Payments
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-link flex items-center p-3 rounded">
+            <i class="fas fa-star mr-3"></i> Reviews
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-link flex items-center p-3 rounded">
+            <i class="fas fa-newspaper mr-3"></i> News & Blog
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-link flex items-center p-3 rounded">
+            <i class="fas fa-images mr-3"></i> Gallery
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-link flex items-center p-3 rounded">
+            <i class="fas fa-cog mr-3"></i> Settings
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-link flex items-center p-3 rounded">
+            <i class="fas fa-user-shield mr-3"></i> Staff Management
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- Mobile Sidebar Toggle -->
+  <button id="sidebar-toggle" class="md:hidden fixed top-4 left-4 z-50 bg-white p-2 rounded shadow">
+    <i class="fas fa-bars text-gray-700"></i>
+  </button>
+
+  <!-- Main Content -->
+  <div class="flex-1 md:ml-64">
+    <!-- Top Navigation -->
+    <header class="bg-white shadow-sm py-4 px-6">
+      <div class="flex justify-between items-center">
+        <h2 class="text-xl font-semibold text-gray-800">Dashboard Overview</h2>
+        <div class="flex items-center space-x-4">
+          <div class="relative">
+            <i class="fas fa-bell text-gray-500 cursor-pointer"></i>
+            <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">3</span>
+          </div>
+          <div class="relative">
+            <button id="user-menu-btn" class="flex items-center focus:outline-none">
+              <span class="mr-2 text-gray-700 hidden md:inline">Admin User</span>
+              <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="User" class="w-8 h-8 rounded-full">
+            </button>
+            <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded shadow-lg z-50 border border-gray-200">
+              <a href="#" class="block px-4 py-2 hover:bg-gray-100"><i class="fas fa-user mr-2"></i>Profile</a>
+              <a href="#" class="block px-4 py-2 hover:bg-gray-100"><i class="fas fa-cog mr-2"></i>Settings</a>
+              <a href="#" class="block px-4 py-2 hover:bg-gray-100"><i class="fas fa-sign-out-alt mr-2"></i>Logout</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="p-6">
+      <!-- Stats Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+        <div class="dashboard-card bg-white p-6 rounded-lg">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="text-gray-500">Total Bookings</p>
+              <h3 class="text-2xl font-bold mt-1">1,248</h3>
+              <p class="text-sm text-green-500 mt-2"><i class="fas fa-arrow-up mr-1"></i> 12% from last month</p>
+            </div>
+            <div class="bg-blue-100 p-3 rounded-full">
+              <i class="fas fa-calendar-check text-blue-500 text-xl"></i>
+            </div>
+          </div>
+        </div>
+        
+        <div class="dashboard-card bg-white p-6 rounded-lg">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="text-gray-500">Revenue</p>
+              <h3 class="text-2xl font-bold mt-1">$84,760</h3>
+              <p class="text-sm text-green-500 mt-2"><i class="fas fa-arrow-up mr-1"></i> 8% from last month</p>
+            </div>
+            <div class="bg-green-100 p-3 rounded-full">
+              <i class="fas fa-dollar-sign text-green-500 text-xl"></i>
+            </div>
+          </div>
+        </div>
+        
+        <div class="dashboard-card bg-white p-6 rounded-lg">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="text-gray-500">Occupancy Rate</p>
+              <h3 class="text-2xl font-bold mt-1">78%</h3>
+              <p class="text-sm text-red-500 mt-2"><i class="fas fa-arrow-down mr-1"></i> 3% from last month</p>
+            </div>
+            <div class="bg-purple-100 p-3 rounded-full">
+              <i class="fas fa-bed text-purple-500 text-xl"></i>
+            </div>
+          </div>
+        </div>
+        
+        <div class="dashboard-card bg-white p-6 rounded-lg">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="text-gray-500">Customer Reviews</p>
+              <h3 class="text-2xl font-bold mt-1">4.8 <span class="text-yellow-400"><i class="fas fa-star"></i></span></h3>
+              <p class="text-sm text-gray-500 mt-2">Based on 324 reviews</p>
+            </div>
+            <div class="bg-yellow-100 p-3 rounded-full">
+              <i class="fas fa-star text-yellow-500 text-xl"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Row -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <!-- Revenue Chart -->
+        <div class="dashboard-card bg-white p-6 rounded-lg">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="font-semibold">Revenue Overview</h3>
+            <select class="bg-gray-100 border border-gray-300 rounded px-3 py-1 text-sm">
+              <option>Last 7 Days</option>
+              <option selected>Last 30 Days</option>
+              <option>Last 90 Days</option>
+              <option>This Year</option>
+            </select>
+          </div>
+          <canvas id="revenueChart" height="250"></canvas>
+        </div>
+        
+        <!-- Occupancy Chart -->
+        <div class="dashboard-card bg-white p-6 rounded-lg">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="font-semibold">Room Occupancy</h3>
+            <select class="bg-gray-100 border border-gray-300 rounded px-3 py-1 text-sm">
+              <option>Last 7 Days</option>
+              <option selected>Last 30 Days</option>
+              <option>Last 90 Days</option>
+              <option>This Year</option>
+            </select>
+          </div>
+          <canvas id="occupancyChart" height="250"></canvas>
+        </div>
+      </div>
+
+      <!-- Recent Bookings & Quick Actions -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+        <!-- Recent Bookings -->
+        <div class="lg:col-span-2 dashboard-card bg-white p-6 rounded-lg">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="font-semibold">Recent Bookings</h3>
+            <a href="#" class="text-blue-500 text-sm hover:underline">View All</a>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="min-w-full dashboard-table">
+              <thead>
+                <tr>
+                  <th class="py-3 px-4 text-left">Booking ID</th>
+                  <th class="py-3 px-4 text-left">Guest</th>
+                  <th class="py-3 px-4 text-left">Room</th>
+                  <th class="py-3 px-4 text-left">Dates</th>
+                  <th class="py-3 px-4 text-left">Status</th>
+                  <th class="py-3 px-4 text-left">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="py-3 px-4">GH-2024-0567</td>
+                  <td class="py-3 px-4">Sarah Johnson</td>
+                  <td class="py-3 px-4">Deluxe Room</td>
+                  <td class="py-3 px-4">May 15 - 20, 2024</td>
+                  <td class="py-3 px-4"><span class="status-badge status-confirmed">Confirmed</span></td>
+                  <td class="py-3 px-4">
+                    <button class="text-blue-500 hover:text-blue-700 mr-2"><i class="fas fa-eye"></i></button>
+                    <button class="text-green-500 hover:text-green-700"><i class="fas fa-edit"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="py-3 px-4">GH-2024-0566</td>
+                  <td class="py-3 px-4">Michael Brown</td>
+                  <td class="py-3 px-4">Executive Suite</td>
+                  <td class="py-3 px-4">May 12 - 15, 2024</td>
+                  <td class="py-3 px-4"><span class="status-badge status-completed">Completed</span></td>
+                  <td class="py-3 px-4">
+                    <button class="text-blue-500 hover:text-blue-700 mr-2"><i class="fas fa-eye"></i></button>
+                    <button class="text-green-500 hover:text-green-700"><i class="fas fa-edit"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="py-3 px-4">GH-2024-0565</td>
+                  <td class="py-3 px-4">Emily Davis</td>
+                  <td class="py-3 px-4">Presidential Suite</td>
+                  <td class="py-3 px-4">May 18 - 25, 2024</td>
+                  <td class="py-3 px-4"><span class="status-badge status-pending">Pending</span></td>
+                  <td class="py-3 px-4">
+                    <button class="text-blue-500 hover:text-blue-700 mr-2"><i class="fas fa-eye"></i></button>
+                    <button class="text-green-500 hover:text-green-700"><i class="fas fa-edit"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="py-3 px-4">GH-2024-0564</td>
+                  <td class="py-3 px-4">Robert Taylor</td>
+                  <td class="py-3 px-4">Ocean View Room</td>
+                  <td class="py-3 px-4">May 10 - 12, 2024</td>
+                  <td class="py-3 px-4"><span class="status-badge status-cancelled">Cancelled</span></td>
+                  <td class="py-3 px-4">
+                    <button class="text-blue-500 hover:text-blue-700 mr-2"><i class="fas fa-eye"></i></button>
+                    <button class="text-green-500 hover:text-green-700"><i class="fas fa-edit"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+        <!-- Quick Actions & Recent Reviews -->
+        <div class="space-y-6">
+          <!-- Quick Actions -->
+          <div class="dashboard-card bg-white p-6 rounded-lg">
+            <h3 class="font-semibold mb-4">Quick Actions</h3>
+            <div class="grid grid-cols-2 gap-3">
+              <a href="#" class="bg-blue-50 text-blue-600 p-4 rounded-lg flex flex-col items-center justify-center hover:bg-blue-100 transition">
+                <i class="fas fa-plus-circle text-xl mb-2"></i>
+                <span class="text-sm">New Booking</span>
+              </a>
+              <a href="#" class="bg-green-50 text-green-600 p-4 rounded-lg flex flex-col items-center justify-center hover:bg-green-100 transition">
+                <i class="fas fa-bed text-xl mb-2"></i>
+                <span class="text-sm">Add Room</span>
+              </a>
+              <a href="#" class="bg-purple-50 text-purple-600 p-4 rounded-lg flex flex-col items-center justify-center hover:bg-purple-100 transition">
+                <i class="fas fa-user-plus text-xl mb-2"></i>
+                <span class="text-sm">Add Staff</span>
+              </a>
+              <a href="#" class="bg-yellow-50 text-yellow-600 p-4 rounded-lg flex flex-col items-center justify-center hover:bg-yellow-100 transition">
+                <i class="fas fa-newspaper text-xl mb-2"></i>
+                <span class="text-sm">Add News</span>
+              </a>
+            </div>
+          </div>
+          
+          <!-- Recent Reviews -->
+          <div class="dashboard-card bg-white p-6 rounded-lg">
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="font-semibold">Recent Reviews</h3>
+              <a href="#" class="text-blue-500 text-sm hover:underline">View All</a>
+            </div>
+            <div class="space-y-4">
+              <div class="flex items-start">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User" class="w-10 h-10 rounded-full mr-3">
+                <div>
+                  <div class="flex items-center mb-1">
+                    <div class="text-yellow-400 mr-2">
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                    </div>
+                    <span class="text-gray-500 text-sm">Deluxe Room</span>
+                  </div>
+                  <p class="text-sm">"Amazing service and very comfortable rooms. Will definitely return!"</p>
+                  <p class="text-gray-500 text-xs mt-1">Sarah Johnson - May 12, 2024</p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" class="w-10 h-10 rounded-full mr-3">
+                <div>
+                  <div class="flex items-center mb-1">
+                    <div class="text-yellow-400 mr-2">
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="far fa-star"></i>
+                    </div>
+                    <span class="text-gray-500 text-sm">Executive Suite</span>
+                  </div>
+                  <p class="text-sm">"Great experience but the WiFi was slow at peak times."</p>
+                  <p class="text-gray-500 text-xs mt-1">Michael Brown - May 5, 2024</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Room Status Overview -->
+      <div class="dashboard-card bg-white p-6 rounded-lg mb-6">
+        <h3 class="font-semibold mb-4">Room Status Overview</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          <div class="border rounded-lg p-4 text-center">
+            <div class="text-2xl font-bold text-blue-500">24</div>
+            <div class="text-gray-600 text-sm">Deluxe Rooms</div>
+            <div class="text-green-500 text-xs mt-1">18 Available</div>
+          </div>
+          <div class="border rounded-lg p-4 text-center">
+            <div class="text-2xl font-bold text-blue-500">12</div>
+            <div class="text-gray-600 text-sm">Executive Suites</div>
+            <div class="text-green-500 text-xs mt-1">8 Available</div>
+          </div>
+          <div class="border rounded-lg p-4 text-center">
+            <div class="text-2xl font-bold text-blue-500">6</div>
+            <div class="text-gray-600 text-sm">Presidential Suites</div>
+            <div class="text-green-500 text-xs mt-1">3 Available</div>
+          </div>
+          <div class="border rounded-lg p-4 text-center">
+            <div class="text-2xl font-bold text-blue-500">10</div>
+            <div class="text-gray-600 text-sm">Ocean View Rooms</div>
+            <div class="text-green-500 text-xs mt-1">7 Available</div>
+          </div>
+          <div class="border rounded-lg p-4 text-center">
+            <div class="text-2xl font-bold text-blue-500">4</div>
+            <div class="text-gray-600 text-sm">Family Suites</div>
+            <div class="text-green-500 text-xs mt-1">2 Available</div>
+          </div>
+          <div class="border rounded-lg p-4 text-center">
+            <div class="text-2xl font-bold text-blue-500">5</div>
+            <div class="text-gray-600 text-sm">In Maintenance</div>
+            <div class="text-red-500 text-xs mt-1">Needs Attention</div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Toggle mobile sidebar
+    document.getElementById('sidebar-toggle').addEventListener('click', function() {
+      document.querySelector('.sidebar').classList.toggle('hidden');
+    });
+
+    // Toggle user dropdown
+    document.getElementById('user-menu-btn').addEventListener('click', function() {
+      document.getElementById('user-dropdown').classList.toggle('hidden');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('#user-menu-btn') && !e.target.closest('#user-dropdown')) {
+        document.getElementById('user-dropdown').classList.add('hidden');
+      }
+    });
+
+    // Revenue Chart
+    const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+    const revenueChart = new Chart(revenueCtx, {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+        datasets: [{
+          label: 'Revenue ($)',
+          data: [65000, 59000, 80000, 81000, 84760, 90000, 100000],
+          backgroundColor: 'rgba(13, 74, 157, 0.1)',
+          borderColor: 'rgba(13, 74, 157, 1)',
+          borderWidth: 2,
+          tension: 0.4,
+          fill: true
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: {
+              drawBorder: false
+            }
+          },
+          x: {
+            grid: {
+              display: false
+            }
+          }
+        }
+      }
+    });
+
+    // Occupancy Chart
+    const occupancyCtx = document.getElementById('occupancyChart').getContext('2d');
+    const occupancyChart = new Chart(occupancyCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Deluxe', 'Executive', 'Presidential', 'Ocean View', 'Family'],
+        datasets: [{
+          label: 'Occupancy Rate (%)',
+          data: [75, 67, 50, 70, 50],
+          backgroundColor: [
+            'rgba(13, 74, 157, 0.7)',
+            'rgba(10, 26, 43, 0.7)',
+            'rgba(255, 193, 7, 0.7)',
+            'rgba(52, 152, 219, 0.7)',
+            'rgba(155, 89, 182, 0.7)'
+          ],
+          borderColor: [
+            'rgba(13, 74, 157, 1)',
+            'rgba(10, 26, 43, 1)',
+            'rgba(255, 193, 7, 1)',
+            'rgba(52, 152, 219, 1)',
+            'rgba(155, 89, 182, 1)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100,
+            grid: {
+              drawBorder: false
+            }
+          },
+          x: {
+            grid: {
+              display: false
+            }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

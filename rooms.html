@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>All Rooms | Grand Horizon</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #0d4a9d;
+      --secondary: #0a1a2b;
+      --accent: #ffc107;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+      color: white;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    /* Header Styles */
+    header {
+      background: rgba(10, 26, 43, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+    
+    .logo {
+      font-weight: 700;
+      font-size: 1.75rem;
+      background: linear-gradient(to right, var(--primary), #3a7bd5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    /* Card Styles */
+    .card {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s ease;
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 30px rgba(13, 74, 157, 0.3);
+      border-color: rgba(13, 74, 157, 0.5);
+    }
+    
+    /* Button Styles */
+    .btn {
+      transition: all 0.3s;
+      transform: translateY(0);
+      background: linear-gradient(135deg, var(--primary) 0%, #1a5cb0 100%);
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      padding: 12px 24px;
+    }
+    
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(13, 74, 157, 0.4);
+      background: linear-gradient(135deg, #1a5cb0 0%, var(--primary) 100%);
+    }
+    
+    .btn:active {
+      transform: translateY(1px);
+    }
+    
+    /* Typography */
+    h1, h2, h3, h4 {
+      font-weight: 700;
+      color: white;
+      margin-bottom: 1.5rem;
+    }
+    
+    h2 {
+      font-size: 2rem;
+      position: relative;
+      display: inline-block;
+    }
+    
+    h2:after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: var(--primary);
+      border-radius: 3px;
+    }
+    
+    p {
+      color: rgba(255, 255, 255, 0.85);
+    }
+    
+    /* Room Badges */
+    .room-badge {
+      transition: all 0.3s;
+      font-size: 0.75rem;
+      padding: 4px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    
+    /* Filter Section */
+    .filter-section {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(8px);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      h2 {
+        font-size: 1.75rem;
+      }
+      
+      .container {
+        padding: 0 15px;
+      }
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+  <!-- Header Section -->
+  <header class="py-4">
+    <div class="container flex items-center justify-between">
+      <a href="index.html" class="logo">Grand Horizon</a>
+      
+      <nav class="hidden md:flex space-x-6 lg:space-x-8">
+        <a href="index.html">Home</a>
+        <a href="rooms.html" class="text-blue-400">Rooms</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="news.html">News</a>
+        <a href="index.html#reviews">Reviews</a>
+      </nav>
+      
+      <div class="flex items-center space-x-4">
+        <a href="login.html" class="text-white hover:text-blue-400 transition">Login</a>
+        <button id="menu-btn" class="md:hidden text-white focus:outline-none" onclick="toggleMobileMenu()">
+          <i class="fas fa-bars text-2xl"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="fixed inset-0 z-40 md:hidden opacity-0 invisible transition-all duration-400 transform translate-x-full bg-[#0a1a2b]">
+    <div class="flex justify-end p-6">
+      <button id="close-menu" class="text-white text-3xl focus:outline-none hover:text-blue-400 transition" onclick="toggleMobileMenu()">&times;</button>
+    </div>
+    <nav class="flex flex-col items-center space-y-8 mt-12 text-xl">
+      <a href="index.html" class="text-white hover:text-blue-400 transition" onclick="toggleMobileMenu()">Home</a>
+      <a href="rooms.html" class="text-blue-400 hover:text-blue-300 transition" onclick="toggleMobileMenu()">Rooms</a>
+      <a href="gallery.html" class="text-white hover:text-blue-400 transition" onclick="toggleMobileMenu()">Gallery</a>
+      <a href="news.html" class="text-white hover:text-blue-400 transition" onclick="toggleMobileMenu()">News</a>
+      <a href="index.html#reviews" class="text-white hover:text-blue-400 transition" onclick="toggleMobileMenu()">Reviews</a>
+      <div class="pt-8 border-t border-gray-700 w-3/4 text-center">
+        <a href="login.html" class="text-blue-400 hover:underline"><i class="fas fa-sign-in-alt mr-2"></i>Login</a>
+      </div>
+    </nav>
+  </div>
+
+  <main class="flex-grow pt-24 pb-12">
+    <div class="container">
+      <h1 class="text-3xl md:text-4xl font-bold mb-2 text-center">Our Luxury Rooms & Suites</h1>
+      <p class="text-gray-400 text-center max-w-2xl mx-auto mb-10">Experience unparalleled comfort and elegance in our meticulously designed accommodations</p>
+      
+      <!-- Filter Section -->
+      <div class="filter-section p-6 mb-12">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div>
+            <label class="block text-sm font-medium mb-2">Room Type</label>
+            <select class="w-full">
+              <option>All Types</option>
+              <option>Deluxe Room</option>
+              <option>Executive Suite</option>
+              <option>Presidential Suite</option>
+              <option>Ocean View</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-2">Price Range</label>
+            <select class="w-full">
+              <option>All Prices</option>
+              <option>$100 - $200</option>
+              <option>$200 - $300</option>
+              <option>$300 - $400</option>
+              <option>$400+</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-2">Bed Type</label>
+            <select class="w-full">
+              <option>Any Bed</option>
+              <option>King Size</option>
+              <option>Queen Size</option>
+              <option>Twin Beds</option>
+            </select>
+          </div>
+          <div class="flex items-end">
+            <button class="btn w-full">
+              Filter Rooms <i class="fas fa-filter ml-2"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- All Rooms Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Room 1 -->
+        <div class="card">
+          <div class="relative">
+            <img alt="Deluxe Room" class="w-full h-64 object-cover" src="https://storage.googleapis.com/a1aa/image/65defebe-83ed-4aa8-5d07-5a123f37da30.jpg">
+            <div class="absolute top-3 left-3 bg-red-500 text-white px-2 py-1 rounded text-xs font-bold room-badge">
+              Most Popular
+            </div>
+            <div class="absolute bottom-3 right-3 bg-black bg-opacity-70 text-white px-2 py-1 rounded text-xs">
+              <i class="fas fa-expand-arrows-alt mr-1"></i> 360° View
+            </div>
+          </div>
+          <div class="p-4 flex-grow">
+            <h3 class="text-white text-lg font-bold mb-2">Deluxe Room</h3>
+            <p class="text-gray-400 text-sm mb-3">Spacious room with stunning city views and modern amenities.</p>
+            <div class="flex items-center mb-3">
+              <div class="flex text-yellow-400">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+              </div>
+              <span class="text-gray-300 text-sm ml-1">(24 reviews)</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <div>
+                <span class="text-white font-bold text-lg">$120</span>
+                <span class="text-gray-400 text-sm ml-1">/night</span>
+              </div>
+              <button class="btn py-2 px-4 text-sm">
+                Book Now
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Room 2 -->
+        <div class="card">
+          <div class="relative">
+            <img alt="Executive Suite" class="w-full h-64 object-cover" src="https://storage.googleapis.com/a1aa/image/193f3e74-6b2c-4095-64db-44d141128dde.jpg">
+            <div class="absolute top-3 left-3 bg-green-500 text-white px-2 py-1 rounded text-xs font-bold room-badge">
+              Available
+            </div>
+          </div>
+          <div class="p-4 flex-grow">
+            <h3 class="text-white text-lg font-bold mb-2">Executive Suite</h3>
+            <p class="text-gray-400 text-sm mb-3">Luxury suite with separate living area and premium services.</p>
+            <div class="flex items-center mb-3">
+              <div class="flex text-yellow-400">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="far fa-star"></i>
+              </div>
+              <span class="text-gray-300 text-sm ml-1">(18 reviews)</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <div>
+                <span class="text-white font-bold text-lg">$220</span>
+                <span class="text-gray-400 text-sm ml-1">/night</span>
+              </div>
+              <button class="btn py-2 px-4 text-sm">
+                Book Now
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Room 3 -->
+        <div class="card">
+          <div class="relative">
+            <img alt="Junior Suite" class="w-full h-64 object-cover" src="https://storage.googleapis.com/a1aa/image/846ff145-e268-4a54-f1d8-c038cf5c88b2.jpg">
+            <div class="absolute top-3 left-3 bg-yellow-500 text-white px-2 py-1 rounded text-xs font-bold room-badge">
+              Last Room
+            </div>
+          </div>
+          <div class="p-4 flex-grow">
+            <h3 class="text-white text-lg font-bold mb-2">Junior Suite</h3>
+            <p class="text-gray-400 text-sm mb-3">Modern design with all amenities for a comfortable stay.</p>
+            <div class="flex items-center mb-3">
+              <div class="flex text-yellow-400">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+              <span class="text-gray-300 text-sm ml-1">(32 reviews)</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <div>
+                <span class="text-white font-bold text-lg">$180</span>
+                <span class="text-gray-400 text-sm ml-1">/night</span>
+              </div>
+              <button class="btn py-2 px-4 text-sm">
+                Book Now
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Room 4 -->
+        <div class="card">
+          <div class="relative">
+            <img alt="Presidential Suite" class="w-full h-64 object-cover" src="https://storage.googleapis.com/a1aa/image/7cdea077-9c8f-43de-4907-975d232c11b5.jpg">
+            <div class="absolute top-3 left-3 bg-purple-500 text-white px-2 py-1 rounded text-xs font-bold room-badge">
+              VIP
+            </div>
+          </div>
+          <div class="p-4 flex-grow">
+            <h3 class="text-white text-lg font-bold mb-2">Presidential Suite</h3>
+            <p class="text-gray-400 text-sm mb-3">Ultimate luxury with panoramic views and butler service.</p>
+            <div class="flex items-center mb-3">
+              <div class="flex text-yellow-400">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+              <span class="text-gray-300 text-sm ml-1">(42 reviews)</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <div>
+                <span class="text-white font-bold text-lg">$450</span>
+                <span class="text-gray-400 text-sm ml-1">/night</span>
+              </div>
+              <button class="btn py-2 px-4 text-sm">
+                Book Now
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Room 5 -->
+        <div class="card">
+          <div class="relative">
+            <img alt="Ocean View Room" class="w-full h-64 object-cover" src="https://storage.googleapis.com/a1aa/image/df2e3f89-3b7e-42e8-0e07-e74086d0585e.jpg">
+            <div class="absolute top-3 left-3 bg-blue-500 text-white px-2 py-1 rounded text-xs font-bold room-badge">
+              New
+            </div>
+          </div>
+          <div class="p-4 flex-grow">
+            <h3 class="text-white text-lg font-bold mb-2">Ocean View Room</h3>
+            <p class="text-gray-400 text-sm mb-3">Direct ocean views with private balcony and sea breeze.</p>
+            <div class="flex items-center mb-3">
+              <div class="flex text-yellow-400">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+              </div>
+              <span class="text-gray-300 text-sm ml-1">(15 reviews)</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <div>
+                <span class="text-white font-bold text-lg">$280</span>
+                <span class="text-gray-400 text-sm ml-1">/night</span>
+              </div>
+              <button class="btn py-2 px-4 text-sm">
+                Book Now
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Room 6 -->
+        <div class="card">
+          <div class="relative">
+            <img alt="Family Suite" class="w-full h-64 object-cover" src="https://storage.googleapis.com/a1aa/image/162f504c-778e-41a9-2390-625ceda4cdda.jpg">
+            <div class="absolute top-3 left-3 bg-pink-500 text-white px-2 py-1 rounded text-xs font-bold room-badge">
+              Family
+            </div>
+          </div>
+          <div class="p-4 flex-grow">
+            <h3 class="text-white text-lg font-bold mb-2">Family Suite</h3>
+            <p class="text-gray-400 text-sm mb-3">Spacious accommodation for families with children.</p>
+            <div class="flex items-center mb-3">
+              <div class="flex text-yellow-400">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="far fa-star"></i>
+              </div>
+              <span class="text-gray-300 text-sm ml-1">(28 reviews)</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <div>
+                <span class="text-white font-bold text-lg">$320</span>
+                <span class="text-gray-400 text-sm ml-1">/night</span>
+              </div>
+              <button class="btn py-2 px-4 text-sm">
+                Book Now
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Pagination -->
+      <div class="flex justify-center mt-12">
+        <nav class="flex items-center space-x-2">
+          <button class="w-10 h-10 flex items-center justify-center rounded-full bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.1)] transition">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button class="w-10 h-10 flex items-center justify-center rounded-full bg-blue-500 text-white">1</button>
+          <button class="w-10 h-10 flex items-center justify-center rounded-full bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.1)] transition">2</button>
+          <button class="w-10 h-10 flex items-center justify-center rounded-full bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.1)] transition">3</button>
+          <button class="w-10 h-10 flex items-center justify-center rounded-full bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.1)] transition">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </nav>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer Section -->
+  <footer class="bg-[#0a1a2b] py-12 mt-auto">
+    <div class="container">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <div>
+          <h3 class="text-white text-lg font-bold mb-4">Grand Horizon</h3>
+          <p class="text-gray-400 text-sm">Luxury accommodations with world-class amenities in the heart of the city.</p>
+          <div class="flex space-x-4 mt-4">
+            <a href="#" class="text-gray-400 hover:text-blue-400 transition" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="text-gray-400 hover:text-blue-400 transition" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="text-gray-400 hover:text-blue-400 transition" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-white text-lg font-bold mb-4">Quick Links</h3>
+          <ul class="space-y-2">
+            <li><a href="index.html" class="text-gray-400 hover:text-blue-400 text-sm transition">Home</a></li>
+            <li><a href="rooms.html" class="text-blue-400 hover:text-blue-300 text-sm transition">Rooms & Suites</a></li>
+            <li><a href="gallery.html" class="text-gray-400 hover:text-blue-400 text-sm transition">Photo Gallery</a></li>
+            <li><a href="news.html" class="text-gray-400 hover:text-blue-400 text-sm transition">Hotel News</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-white text-lg font-bold mb-4">Contact Us</h3>
+          <ul class="space-y-2 text-gray-400 text-sm">
+            <li class="flex items-start">
+              <i class="fas fa-map-marker-alt mt-1 mr-2 text-blue-400"></i>
+              <span>123 Hotel Street, City, Country</span>
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-phone-alt mr-2 text-blue-400"></i>
+              <span>+1 234 567 8900</span>
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-envelope mr-2 text-blue-400"></i>
+              <span>info@grandhorizon.com</span>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-white text-lg font-bold mb-4">Opening Hours</h3>
+          <ul class="space-y-2 text-gray-400 text-sm">
+            <li class="flex justify-between">
+              <span>Monday - Friday:</span>
+              <span>24 hours</span>
+            </li>
+            <li class="flex justify-between">
+              <span>Saturday - Sunday:</span>
+              <span>24 hours</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 pt-6 flex flex-col md:flex-row justify-between items-center text-gray-400 text-sm">
+        <p>&copy; 2024 Grand Horizon Hotel. All rights reserved.</p>
+        <div class="flex space-x-4 mt-4 md:mt-0">
+          <a href="#" class="hover:text-blue-400 transition">Privacy Policy</a>
+          <a href="#" class="hover:text-blue-400 transition">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button id="back-to-top" class="fixed bottom-8 right-8 w-12 h-12 rounded-full flex items-center justify-center hidden bg-gradient-to-br from-[#0d4a9d] to-[#1a5cb0] text-white shadow-lg hover:shadow-xl transition-all">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <script>
+    // Mobile menu toggle
+    function toggleMobileMenu() {
+      const mobileMenu = document.getElementById('mobile-menu');
+      mobileMenu.classList.toggle('opacity-0');
+      mobileMenu.classList.toggle('invisible');
+      mobileMenu.classList.toggle('translate-x-full');
+      
+      // Toggle body scroll
+      if (!mobileMenu.classList.contains('opacity-0')) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = 'auto';
+      }
+    }
+    
+    // Back to top button
+    const backToTopButton = document.getElementById('back-to-top');
+    
+    if (backToTopButton) {
+      window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+          backToTopButton.classList.remove('hidden');
+          backToTopButton.classList.add('flex');
+        } else {
+          backToTopButton.classList.add('hidden');
+          backToTopButton.classList.remove('flex');
+        }
+      });
+      
+      backToTopButton.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+  </script>
+</body>
+</html>

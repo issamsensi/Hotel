@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>Latest News | Grand Horizon</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #0d4a9d;
+      --secondary: #0a1a2b;
+      --accent: #ffc107;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+      color: white;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    /* Header Styles */
+    header {
+      background: rgba(10, 26, 43, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+    
+    .logo {
+      font-weight: 700;
+      font-size: 1.75rem;
+      background: linear-gradient(to right, var(--primary), #3a7bd5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    /* Card Styles */
+    .card {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s ease;
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 30px rgba(13, 74, 157, 0.3);
+      border-color: rgba(13, 74, 157, 0.5);
+    }
+    
+    /* Typography */
+    h1, h2, h3, h4 {
+      font-weight: 700;
+      color: white;
+      margin-bottom: 1.5rem;
+    }
+    
+    h2 {
+      font-size: 2rem;
+      position: relative;
+      display: inline-block;
+    }
+    
+    h2:after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: var(--primary);
+      border-radius: 3px;
+    }
+    
+    p {
+      color: rgba(255, 255, 255, 0.85);
+    }
+    
+    /* Category Badges */
+    .category-badge {
+      transition: all 0.3s;
+      font-size: 0.75rem;
+      padding: 4px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      background: rgba(255,255,255,0.1);
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      h2 {
+        font-size: 1.75rem;
+      }
+      
+      .container {
+        padding: 0 15px;
+      }
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+  <!-- Header Section -->
+  <header class="py-4">
+    <div class="container flex items-center justify-between">
+      <a href="index.html" class="logo">Grand Horizon</a>
+      
+      <nav class="hidden md:flex space-x-6 lg:space-x-8">
+        <a href="index.html">Home</a>
+        <a href="rooms.html">Rooms</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="news.html" class="text-blue-400">News</a>
+        <a href="index.html#reviews">Reviews</a>
+      </nav>
+      
+      <div class="flex items-center space-x-4">
+        <a href="login.html" class="text-white hover:text-blue-400 transition">Login</a>
+        <button id="menu-btn" class="md:hidden text-white focus:outline-none" onclick="toggleMobileMenu()">
+          <i class="fas fa-bars text-2xl"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="fixed inset-0 z-40 md:hidden opacity-0 invisible transition-all duration-400 transform translate-x-full bg-[#0a1a2b]">
+    <div class="flex justify-end p-6">
+      <button id="close-menu" class="text-white text-3xl focus:outline-none hover:text-blue-400 transition" onclick="toggleMobileMenu()">&times;</button>
+    </div>
+    <nav class="flex flex-col items-center space-y-8 mt-12 text-xl">
+      <a href="index.html" class="text-white hover:text-blue-400 transition" onclick="toggleMobileMenu()">Home</a>
+      <a href="rooms.html" class="text-white hover:text-blue-400 transition" onclick="toggleMobileMenu()">Rooms</a>
+      <a href="gallery.html" class="text-white hover:text-blue-400 transition" onclick="toggleMobileMenu()">Gallery</a>
+      <a href="news.html" class="text-blue-400 hover:text-blue-300 transition" onclick="toggleMobileMenu()">News</a>
+      <a href="index.html#reviews" class="text-white hover:text-blue-400 transition" onclick="toggleMobileMenu()">Reviews</a>
+      <div class="pt-8 border-t border-gray-700 w-3/4 text-center">
+        <a href="login.html" class="text-blue-400 hover:underline"><i class="fas fa-sign-in-alt mr-2"></i>Login</a>
+      </div>
+    </nav>
+  </div>
+
+  <main class="flex-grow pt-24 pb-12">
+    <div class="container">
+      <h1 class="text-3xl md:text-4xl font-bold mb-2 text-center">Latest News & Updates</h1>
+      <p class="text-gray-400 text-center max-w-2xl mx-auto mb-10">Stay informed about our latest offerings, events, and hospitality trends</p>
+      
+      <!-- News Categories -->
+      <div class="flex flex-wrap justify-center gap-2 mb-12">
+        <button class="category-badge bg-blue-500 text-white">All</button>
+        <button class="category-badge hover:bg-[rgba(255,255,255,0.2)]">Hotel Updates</button>
+        <button class="category-badge hover:bg-[rgba(255,255,255,0.2)]">Events</button>
+        <button class="category-badge hover:bg-[rgba(255,255,255,0.2)]">Dining</button>
+        <button class="category-badge hover:bg-[rgba(255,255,255,0.2)]">Wellness</button>
+        <button class="category-badge hover:bg-[rgba(255,255,255,0.2)]">Promotions</button>
+      </div>
+      
+      <!-- All News Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- News 1 -->
+        <article class="card group">
+          <div class="relative">
+            <img alt="Hotel renovation" class="w-full h-48 object-cover" src="https://storage.googleapis.com/a1aa/image/7cdea077-9c8f-43de-4907-975d232c11b5.jpg">
+            <div class="absolute top-3 left-3 bg-blue-500 text-white px-2 py-1 rounded text-xs font-bold category-badge">
+              Hotel Updates
+            </div>
+          </div>
+          <div class="p-4 flex-grow">
+            <p class="text-blue-400 text-xs font-semibold mb-1">April 21, 2024</p>
+            <h3 class="text-white text-lg font-bold mb-2 group-hover:text-blue-400 transition">The Future of Hotel Stays</h3>
+            <p class="text-gray-400 text-sm mb-4">Exploring the latest trends in hospitality and guest experiences that will shape the future of luxury accommodations.</p>
+            <a href="news-single.html" class="text-blue-400 text-xs font-semibold uppercase tracking-wide hover:underline flex items-center">
+              Read More <i class="fas fa-arrow-right ml-1 text-xs"></i>
+            </a>
+          </div>
+        </article>
+        
+        <!-- News 2 -->
+        <article class="card group">
+          <div class="relative">
+            <img alt="Smart room technology" class="w-full h-48 object-cover" src="https://storage.googleapis.com/a1aa/image/df2e3f89-3b7e-42e8-0e07-e74086d0585e.jpg">
+            <div class="absolute top-3 left-3 bg-purple-500 text-white px-2 py-1 rounded text-xs font-bold category-badge">
+              Technology
+            </div>
+          </div>
+          <div class="p-4 flex-grow">
+            <p class="text-blue-400 text-xs font-semibold mb-1">March 6, 2024</p>
+            <h3 class="text-white text-lg font-bold mb-2 group-hover:text-blue-400 transition">Exploring Smart Rooms</h3>
+            <p class="text-gray-400 text-sm mb-4">How cutting-edge technology is transforming the modern hotel room experience for unparalleled comfort.</p>
+            <a href="news-single.html" class="text-blue-400 text-xs font-semibold uppercase tracking-wide hover:underline flex items-center">
+              Read More <i class="fas fa-arrow-right ml-1 text-xs"></i>
+            </a>
+          </div>
+        </article>
+        
+        <!-- News 3 -->
+        <article class="card group">
+          <div class="relative">
+            <img alt="Chef preparing food" class="w-full h-48 object-cover" src="https://storage.googleapis.com/a1aa/image/0bc8d64e-cefe-4031-6ff7-09de60081d05.jpg">
+            <div class="absolute top-3 left-3 bg-red-500 text-white px-2 py-1 rounded text-xs font-bold category-badge">
+              Dining
+            </div>
+          </div>
+          <div class="p-4 flex-grow">
+            <p class="text-blue-400 text-xs font-semibold mb-1">February 5, 2024</p>
+            <h3 class="text-white text-lg font-bold mb-2 group-hover:text-blue-400 transition">Culinary Excellence</h3>
+            <p class="text-gray-400 text-sm mb-4">Our Michelin-star chefs share insights into creating memorable dining experiences for our guests.</p>
+            <a href="news-single.html" class="text-blue-400 text-xs font-semibold uppercase tracking-wide hover:underline flex items-center">
+              Read More <i class="fas fa-arrow-right ml-1 text-xs"></i>
+            </a>
+          </div>
+        </article>
+        
+        <!-- News 4 -->
+        <article class="card group">
+          <div class="relative">
+            <img alt="Hotel spa" class="w-full h-48 object-cover" src="https://storage.googleapis.com/a1aa/image/162f504c-778e-41a9-2390-625ceda4cdda.jpg">
+            <div class="absolute top-3 left-3 bg-green-500 text-white px-2 py-1 rounded text-xs font-bold category-badge">
+              Wellness
+            </div>
+          </div>
+          <div class="p-4 flex-grow">
+            <p class="text-blue-400 text-xs font-semibold mb-1">January 15, 2024</p>
+            <h3 class="text-white text-lg font-bold mb-2 group-hover:text-blue-400 transition">New Spa Treatments</h3>
+            <p class="text-gray-400 text-sm mb-4">Discover our new wellness programs and rejuvenating treatments designed for ultimate relaxation.</p>
+            <a href="news-single.html" class="text-blue-400 text-xs font-semibold uppercase tracking-wide hover:underline flex items-center">
+              Read More <i class="fas fa-arrow-right ml-1 text-xs"></i>
+            </a>
+          </div>
+        </article>
+        
+        <!-- News 5 -->
+        <article class="card group">
+          <div class="relative">
+            <img alt="Hotel conference" class="w-full h-48 object-cover" src="https://storage.googleapis.com/a1aa/image/e022416c-bc69-4f6a-18de-507fcbb81610.jpg">
+            <div class="absolute top-3 left-3 bg-yellow-500 text-white px-2 py-1 rounded text-xs font-bold category-badge">
+              Events
+            </div>
+          </div>
+          <div class="p-4 flex-grow">
+            <p class="text-blue-400 text-xs font-semibold mb-1">December 10, 2023</p>
+            <h3 class="text-white text-lg font-bold mb-2 group-hover:text-blue-400 transition">Business Facilities</h3>
+            <p class="text-gray-400 text-sm mb-4">Our newly upgraded conference rooms and business amenities for your professional needs.</p>
+            <a href="news-single.html" class="text-blue-400 text-xs font-semibold uppercase tracking-wide hover:underline flex items-center">
+              Read More <i class="fas fa-arrow-right ml-1 text-xs"></i>
+            </a>
+          </div>
+        </article>
+        
+        <!-- News 6 -->
+        <article class="card group">
+          <div class="relative">
+            <img alt="Summer promotion" class="w-full h-48 object-cover" src="https://storage.googleapis.com/a1aa/image/f5213fef-8b59-435c-10d3-b0ff586b7cee.jpg">
+            <div class="absolute top-3 left-3 bg-pink-500 text-white px-2 py-1 rounded text-xs font-bold category-badge">
+              Promotions
+            </div>
+          </div>
+          <div class="p-4 flex-grow">
+            <p class="text-blue-400 text-xs font-semibold mb-1">November 5, 2023</p>
+            <h3 class="text-white text-lg font-bold mb-2 group-hover:text-blue-400 transition">Summer Special Offers</h3>
+            <p class="text-gray-400 text-sm mb-4">Exclusive summer packages with discounts on extended stays and premium services.</p>
+            <a href="news-single.html" class="text-blue-400 text-xs font-semibold uppercase tracking-wide hover:underline flex items-center">
+              Read More <i class="fas fa-arrow-right ml-1 text-xs"></i>
+            </a>
+          </div>
+        </article>
+      </div>
+      
+      <!-- Pagination -->
+      <div class="flex justify-center mt-12">
+        <nav class="flex items-center space-x-2">
+          <button class="w-10 h-10 flex items-center justify-center rounded-full bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.1)] transition">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button class="w-10 h-10 flex items-center justify-center rounded-full bg-blue-500 text-white">1</button>
+          <button class="w-10 h-10 flex items-center justify-center rounded-full bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.1)] transition">2</button>
+          <button class="w-10 h-10 flex items-center justify-center rounded-full bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.1)] transition">3</button>
+          <button class="w-10 h-10 flex items-center justify-center rounded-full bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.1)] transition">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </nav>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer Section -->
+  <footer class="bg-[#0a1a2b] py-12 mt-auto">
+    <div class="container">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <div>
+          <h3 class="text-white text-lg font-bold mb-4">Grand Horizon</h3>
+          <p class="text-gray-400 text-sm">Luxury accommodations with world-class amenities in the heart of the city.</p>
+          <div class="flex space-x-4 mt-4">
+            <a href="#" class="text-gray-400 hover:text-blue-400 transition" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="text-gray-400 hover:text-blue-400 transition" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="text-gray-400 hover:text-blue-400 transition" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-white text-lg font-bold mb-4">Quick Links</h3>
+          <ul class="space-y-2">
+            <li><a href="index.html" class="text-gray-400 hover:text-blue-400 text-sm transition">Home</a></li>
+            <li><a href="rooms.html" class="text-gray-400 hover:text-blue-400 text-sm transition">Rooms & Suites</a></li>
+            <li><a href="gallery.html" class="text-gray-400 hover:text-blue-400 text-sm transition">Photo Gallery</a></li>
+            <li><a href="news.html" class="text-blue-400 hover:text-blue-300 text-sm transition">Hotel News</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-white text-lg font-bold mb-4">Contact Us</h3>
+          <ul class="space-y-2 text-gray-400 text-sm">
+            <li class="flex items-start">
+              <i class="fas fa-map-marker-alt mt-1 mr-2 text-blue-400"></i>
+              <span>123 Hotel Street, City, Country</span>
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-phone-alt mr-2 text-blue-400"></i>
+              <span>+1 234 567 8900</span>
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-envelope mr-2 text-blue-400"></i>
+              <span>info@grandhorizon.com</span>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-white text-lg font-bold mb-4">Opening Hours</h3>
+          <ul class="space-y-2 text-gray-400 text-sm">
+            <li class="flex justify-between">
+              <span>Monday - Friday:</span>
+              <span>24 hours</span>
+            </li>
+            <li class="flex justify-between">
+              <span>Saturday - Sunday:</span>
+              <span>24 hours</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 pt-6 flex flex-col md:flex-row justify-between items-center text-gray-400 text-sm">
+        <p>&copy; 2024 Grand Horizon Hotel. All rights reserved.</p>
+        <div class="flex space-x-4 mt-4 md:mt-0">
+          <a href="#" class="hover:text-blue-400 transition">Privacy Policy</a>
+          <a href="#" class="hover:text-blue-400 transition">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button id="back-to-top" class="fixed bottom-8 right-8 w-12 h-12 rounded-full flex items-center justify-center hidden bg-gradient-to-br from-[#0d4a9d] to-[#1a5cb0] text-white shadow-lg hover:shadow-xl transition-all">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <script>
+    // Mobile menu toggle
+    function toggleMobileMenu() {
+      const mobileMenu = document.getElementById('mobile-menu');
+      mobileMenu.classList.toggle('opacity-0');
+      mobileMenu.classList.toggle('invisible');
+      mobileMenu.classList.toggle('translate-x-full');
+      
+      // Toggle body scroll
+      if (!mobileMenu.classList.contains('opacity-0')) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = 'auto';
+      }
+    }
+    
+    // Back to top button
+    const backToTopButton = document.getElementById('back-to-top');
+    
+    if (backToTopButton) {
+      window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+          backToTopButton.classList.remove('hidden');
+          backToTopButton.classList.add('flex');
+        } else {
+          backToTopButton.classList.add('hidden');
+          backToTopButton.classList.remove('flex');
+        }
+      });
+      
+      backToTopButton.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>Deluxe Room | Grand Horizon</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+  <style>
+    :root {
+      --primary: #0d4a9d;
+      --secondary: #0a1a2b;
+      --accent: #ffc107;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+      color: white;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    /* Header Styles */
+    header {
+      background: rgba(10, 26, 43, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+    
+    .logo {
+      font-weight: 700;
+      font-size: 1.75rem;
+      background: linear-gradient(to right, var(--primary), #3a7bd5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    /* Button Styles */
+    .btn {
+      transition: all 0.3s;
+      transform: translateY(0);
+      background: linear-gradient(135deg, var(--primary) 0%, #1a5cb0 100%);
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      padding: 12px 24px;
+    }
+    
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(13, 74, 157, 0.4);
+      background: linear-gradient(135deg, #1a5cb0 0%, var(--primary) 100%);
+    }
+    
+    .btn:active {
+      transform: translateY(1px);
+    }
+    
+    /* Typography */
+    h1, h2, h3, h4 {
+      font-weight: 700;
+      color: white;
+      margin-bottom: 1.5rem;
+    }
+    
+    h2 {
+      font-size: 2rem;
+      position: relative;
+      display: inline-block;
+    }
+    
+    h2:after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: var(--primary);
+      border-radius: 3px;
+    }
+    
+    p {
+      color: rgba(255, 255, 255, 0.85);
+    }
+    
+    /* Amenities Grid */
+    .amenity-item {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      transition: all 0.3s;
+    }
+    
+    .amenity-item:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-3px);
+    }
+    
+    /* Booking Widget */
+    .booking-widget {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      h2 {
+        font-size: 1.75rem;
+      }
+      
+      .container {
+        padding: 0 15px;
+      }
+    }
+    
+    /* Swiper Customizations */
+    .room-gallery-thumbs .swiper-slide {
+      opacity: 0.4;
+      cursor: pointer;
+    }
+    
+    .room-gallery-thumbs .swiper-slide-thumb-active {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+  <!-- Header Section -->
+  <header class="py-4">
+    <div class="container flex items-center justify-between">
+      <a href="index.html" class="logo">Grand Horizon</a>
+      
+      <nav class="hidden md:flex space-x-6 lg:space-x-8">
+        <a href="index.html">Home</a>
+        <a href="rooms.html">Rooms</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="news.html">News</a>
+        <a href="index.html#reviews">Reviews</a>
+      </nav>
+      
+      <div class="flex items-center space-x-4">
+        <a href="login.html" class="text-white hover:text-blue-400 transition">Login</a>
+        <button id="menu-btn" class="md:hidden text-white focus:outline-none" onclick="toggleMobileMenu()">
+          <i class="fas fa-bars text-2xl"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="fixed inset-0 z-40 md:hidden opacity-0 invisible transition-all duration-400 transform translate-x-full bg-[#0a1a2b]">
+    <div class="flex justify-end p-6">
+      <button id="close-menu" class="text-white text-3xl focus:outline-none hover:text-blue-400 transition" onclick="toggleMobileMenu()">&times;</button>
+    </div>
+    <nav class="flex flex-col items-center space-y-8 mt-12 text-xl">
+      <a href="index.html" class="text-white hover:text-blue-400 transition" onclick="toggleMobileMenu()">Home</a>
+      <a href="rooms.html" class="text-white hover:text-blue-400 transition" onclick="toggleMobileMenu()">Rooms</a>
+      <a href="gallery.html" class="text-white hover:text-blue-400 transition" onclick="toggleMobileMenu()">Gallery</a>
+      <a href="news.html" class="text-white hover:text-blue-400 transition" onclick="toggleMobileMenu()">News</a>
+      <a href="index.html#reviews" class="text-white hover:text-blue-400 transition" onclick="toggleMobileMenu()">Reviews</a>
+      <div class="pt-8 border-t border-gray-700 w-3/4 text-center">
+        <a href="login.html" class="text-blue-400 hover:underline"><i class="fas fa-sign-in-alt mr-2"></i>Login</a>
+      </div>
+    </nav>
+  </div>
+
+  <main class="flex-grow pt-24 pb-12">
+    <div class="container">
+      <!-- Room Gallery -->
+      <div class="mb-12">
+        <div class="swiper room-gallery-main rounded-lg overflow-hidden h-96 mb-4">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide">
+              <img src="https://storage.googleapis.com/a1aa/image/65defebe-83ed-4aa8-5d07-5a123f37da30.jpg" alt="Deluxe Room" class="w-full h-full object-cover">
+            </div>
+            <div class="swiper-slide">
+              <img src="https://storage.googleapis.com/a1aa/image/193f3e74-6b2c-4095-64db-44d141128dde.jpg" alt="Deluxe Room Bathroom" class="w-full h-full object-cover">
+            </div>
+            <div class="swiper-slide">
+              <img src="https://storage.googleapis.com/a1aa/image/846ff145-e268-4a54-f1d8-c038cf5c88b2.jpg" alt="Deluxe Room View" class="w-full h-full object-cover">
+            </div>
+            <div class="swiper-slide">
+              <img src="https://storage.googleapis.com/a1aa/image/df2e3f89-3b7e-42e8-0e07-e74086d0585e.jpg" alt="Deluxe Room Amenities" class="w-full h-full object-cover">
+            </div>
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+        
+        <div class="swiper room-gallery-thumbs">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide">
+              <img src="https://storage.googleapis.com/a1aa/image/65defebe-83ed-4aa8-5d07-5a123f37da30.jpg" alt="Deluxe Room Thumbnail" class="w-full h-20 object-cover rounded cursor-pointer">
+            </div>
+            <div class="swiper-slide">
+              <img src="https://storage.googleapis.com/a1aa/image/193f3e74-6b2c-4095-64db-44d141128dde.jpg" alt="Deluxe Room Bathroom Thumbnail" class="w-full h-20 object-cover rounded cursor-pointer">
+            </div>
+            <div class="swiper-slide">
+              <img src="https://storage.googleapis.com/a1aa/image/846ff145-e268-4a54-f1d8-c038cf5c88b2.jpg" alt="Deluxe Room View Thumbnail" class="w-full h-20 object-cover rounded cursor-pointer">
+            </div>
+            <div class="swiper-slide">
+              <img src="https://storage.googleapis.com/a1aa/image/df2e3f89-3b7e-42e8-0e07-e74086d0585e.jpg" alt="Deluxe Room Amenities Thumbnail" class="w-full h-20 object-cover rounded cursor-pointer">
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Room Details -->
+        <div class="lg:col-span-2">
+          <div class="flex flex-wrap justify-between items-center mb-6">
+            <h1 class="text-2xl md:text-3xl font-bold">Deluxe Room</h1>
+            <div class="flex items-center">
+              <div class="flex text-yellow-400 mr-2">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+              </div>
+              <span class="text-gray-300 text-sm">(24 reviews)</span>
+            </div>
+          </div>
+          
+          <div class="flex items-center mb-6">
+            <span class="text-white font-bold text-2xl">$120</span>
+            <span class="text-gray-400 ml-1">/night</span>
+            <span class="bg-green-500 text-white text-xs px-2 py-1 rounded ml-4">Available</span>
+          </div>
+          
+          <p class="text-gray-300 mb-8">
+            Our Deluxe Room offers a perfect blend of comfort and elegance, featuring stunning city views through floor-to-ceiling windows. 
+            The spacious 35 sqm room is designed with contemporary decor and premium furnishings to ensure a memorable stay.
+          </p>
+          
+          <div class="mb-8">
+            <h2 class="mb-4">Room Features</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="amenity-item">
+                <i class="fas fa-bed text-blue-400 text-xl mr-3"></i>
+                <div>
+                  <h4 class="font-semibold">King Size Bed</h4>
+                  <p class="text-gray-400 text-sm">Premium mattress with luxury linens</p>
+                </div>
+              </div>
+              <div class="amenity-item">
+                <i class="fas fa-wifi text-blue-400 text-xl mr-3"></i>
+                <div>
+                  <h4 class="font-semibold">High-Speed WiFi</h4>
+                  <p class="text-gray-400 text-sm">Unlimited access throughout stay</p>
+                </div>
+              </div>
+              <div class="amenity-item">
+                <i class="fas fa-tv text-blue-400 text-xl mr-3"></i>
+                <div>
+                  <h4 class="font-semibold">Smart TV</h4>
+                  <p class="text-gray-400 text-sm">55" with streaming services</p>
+                </div>
+              </div>
+              <div class="amenity-item">
+                <i class="fas fa-snowflake text-blue-400 text-xl mr-3"></i>
+                <div>
+                  <h4 class="font-semibold">Air Conditioning</h4>
+                  <p class="text-gray-400 text-sm">Individual climate control</p>
+                </div>
+              </div>
+              <div class="amenity-item">
+                <i class="fas fa-coffee text-blue-400 text-xl mr-3"></i>
+                <div>
+                  <h4 class="font-semibold">Coffee Maker</h4>
+                  <p class="text-gray-400 text-sm">Nespresso machine with capsules</p>
+                </div>
+              </div>
+              <div class="amenity-item">
+                <i class="fas fa-shower text-blue-400 text-xl mr-3"></i>
+                <div>
+                  <h4 class="font-semibold">Rain Shower</h4>
+                  <p class="text-gray-400 text-sm">Premium bathroom amenities</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mb-8">
+            <h2 class="mb-4">Description</h2>
+            <div class="space-y-4 text-gray-300">
+              <p>
+                The Deluxe Room at Grand Horizon Hotel is designed for discerning travelers who appreciate attention to detail. 
+                The room features a sophisticated color palette with rich textures and custom-designed furniture.
+              </p>
+              <p>
+                Large windows offer panoramic views of the city skyline, while blackout curtains ensure restful sleep. 
+                The work desk with ergonomic chair and ample charging ports makes it ideal for business travelers.
+              </p>
+              <p>
+                The marble-appointed bathroom includes a walk-in rain shower, plush bathrobes, and premium toiletries. 
+                Guests enjoy 24-hour room service and access to our executive lounge with complimentary refreshments.
+              </p>
+            </div>
+          </div>
+          
+          <div>
+            <h2 class="mb-4">Guest Reviews</h2>
+            <div class="space-y-6">
+              <!-- Review 1 -->
+              <div class="bg-[rgba(255,255,255,0.05)] p-4 rounded-lg">
+                <div class="flex items-center mb-3">
+                  <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah J." class="w-10 h-10 rounded-full mr-3">
+                  <div>
+                    <h4 class="font-semibold">Sarah Johnson</h4>
+                    <div class="flex text-yellow-400 text-sm">
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                    </div>
+                  </div>
+                </div>
+                <p class="text-gray-300 italic">"The Deluxe Room exceeded all my expectations. The bed was incredibly comfortable and the city views were breathtaking. Will definitely return!"</p>
+                <p class="text-gray-500 text-sm mt-2">Stayed in March 2024</p>
+              </div>
+              
+              <!-- Review 2 -->
+              <div class="bg-[rgba(255,255,255,0.05)] p-4 rounded-lg">
+                <div class="flex items-center mb-3">
+                  <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Michael B." class="w-10 h-10 rounded-full mr-3">
+                  <div>
+                    <h4 class="font-semibold">Michael Brown</h4>
+                    <div class="flex text-yellow-400 text-sm">
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="far fa-star"></i>
+                    </div>
+                  </div>
+                </div>
+                <p class="text-gray-300 italic">"Excellent room with all the amenities I needed. The only minor issue was slow WiFi at peak times, but everything else was perfect."</p>
+                <p class="text-gray-500 text-sm mt-2">Stayed in February 2024</p>
+              </div>
+            </div>
+            
+            <button class="btn mt-6">
+              <i class="fas fa-pen mr-2"></i> Write a Review
+            </button>
+          </div>
+        </div>
+        
+        <!-- Booking Widget -->
+        <div class="booking-widget p-6 h-fit sticky top-24">
+          <h2 class="mb-6 text-center">Book This Room</h2>
+          
+          <form class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium mb-2">Check-In Date</label>
+              <input type="date" class="w-full">
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium mb-2">Check-Out Date</label>
+              <input type="date" class="w-full">
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium mb-2">Adults</label>
+                <select class="w-full">
+                  <option>1</option>
+                  <option selected>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-2">Children</label>
+                <select class="w-full">
+                  <option selected>0</option>
+                  <option>1</option>
+                  <option>2</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="pt-4">
+              <div class="flex justify-between mb-2">
+                <span class="text-gray-400">$120 x 5 nights</span>
+                <span class="font-semibold">$600</span>
+              </div>
+              <div class="flex justify-between mb-2">
+                <span class="text-gray-400">Service fee</span>
+                <span class="font-semibold">$30</span>
+              </div>
+              <div class="flex justify-between mb-2">
+                <span class="text-gray-400">Taxes</span>
+                <span class="font-semibold">$48</span>
+              </div>
+              <div class="border-t border-gray-700 pt-2 mt-2 flex justify-between">
+                <span class="font-semibold">Total</span>
+                <span class="font-bold text-lg">$678</span>
+              </div>
+            </div>
+            
+            <button class="btn w-full mt-4 py-3">
+              <i class="fas fa-calendar-check mr-2"></i> Book Now
+            </button>
+            
+            <p class="text-center text-gray-400 text-sm mt-4">
+              <i class="fas fa-lock mr-1"></i> Secure payment processing
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer Section -->
+  <footer class="bg-[#0a1a2b] py-12 mt-auto">
+    <div class="container">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <div>
+          <h3 class="text-white text-lg font-bold mb-4">Grand Horizon</h3>
+          <p class="text-gray-400 text-sm">Luxury accommodations with world-class amenities in the heart of the city.</p>
+          <div class="flex space-x-4 mt-4">
+            <a href="#" class="text-gray-400 hover:text-blue-400 transition" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="text-gray-400 hover:text-blue-400 transition" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="text-gray-400 hover:text-blue-400 transition" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-white text-lg font-bold mb-4">Quick Links</h3>
+          <ul class="space-y-2">
+            <li><a href="index.html" class="text-gray-400 hover:text-blue-400 text-sm transition">Home</a></li>
+            <li><a href="rooms.html" class="text-gray-400 hover:text-blue-400 text-sm transition">Rooms & Suites</a></li>
+            <li><a href="gallery.html" class="text-gray-400 hover:text-blue-400 text-sm transition">Photo Gallery</a></li>
+            <li><a href="news.html" class="text-gray-400 hover:text-blue-400 text-sm transition">Hotel News</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-white text-lg font-bold mb-4">Contact Us</h3>
+          <ul class="space-y-2 text-gray-400 text-sm">
+            <li class="flex items-start">
+              <i class="fas fa-map-marker-alt mt-1 mr-2 text-blue-400"></i>
+              <span>123 Hotel Street, City, Country</span>
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-phone-alt mr-2 text-blue-400"></i>
+              <span>+1 234 567 8900</span>
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-envelope mr-2 text-blue-400"></i>
+              <span>info@grandhorizon.com</span>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-white text-lg font-bold mb-4">Opening Hours</h3>
+          <ul class="space-y-2 text-gray-400 text-sm">
+            <li class="flex justify-between">
+              <span>Monday - Friday:</span>
+              <span>24 hours</span>
+            </li>
+            <li class="flex justify-between">
+              <span>Saturday - Sunday:</span>
+              <span>24 hours</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 pt-6 flex flex-col md:flex-row justify-between items-center text-gray-400 text-sm">
+        <p>&copy; 2024 Grand Horizon Hotel. All rights reserved.</p>
+        <div class="flex space-x-4 mt-4 md:mt-0">
+          <a href="#" class="hover:text-blue-400 transition">Privacy Policy</a>
+          <a href="#" class="hover:text-blue-400 transition">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button id="back-to-top" class="fixed bottom-8 right-8 w-12 h-12 rounded-full flex items-center justify-center hidden bg-gradient-to-br from-[#0d4a9d] to-[#1a5cb0] text-white shadow-lg hover:shadow-xl transition-all">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+
+  <script>
+    // Mobile menu toggle
+    function toggleMobileMenu() {
+      const mobileMenu = document.getElementById('mobile-menu');
+      mobileMenu.classList.toggle('opacity-0');
+      mobileMenu.classList.toggle('invisible');
+      mobileMenu.classList.toggle('translate-x-full');
+      
+      // Toggle body scroll
+      if (!mobileMenu.classList.contains('opacity-0')) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = 'auto';
+      }
+    }
+    
+    // Initialize room gallery swiper
+    const galleryThumbs = new Swiper('.room-gallery-thumbs', {
+      spaceBetween: 10,
+      slidesPerView: 4,
+      freeMode: true,
+      watchSlidesProgress: true,
+    });
+    
+    const galleryMain = new Swiper('.room-gallery-main', {
+      spaceBetween: 10,
+      thumbs: {
+        swiper: galleryThumbs,
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+    });
+    
+    // Back to top button
+    const backToTopButton = document.getElementById('back-to-top');
+    
+    if (backToTopButton) {
+      window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+          backToTopButton.classList.remove('hidden');
+          backToTopButton.classList.add('flex');
+        } else {
+          backToTopButton.classList.add('hidden');
+          backToTopButton.classList.remove('flex');
+        }
+      });
+      
+      backToTopButton.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>The Future of Hotel Stays | Grand Horizon</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #0d4a9d;
+      --secondary: #0a1a2b;
+      --accent: #ffc107;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+      color: white;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    /* Header Styles */
+    header {
+      background: rgba(10, 26, 43, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+    
+    .logo {
+      font-weight: 700;
+      font-size: 1.75rem;
+      background: linear-gradient(to right, var(--primary), #3a7bd5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    /* Article Styles */
+    .article-content p {
+      margin-bottom: 1.5rem;
+      color: rgba(255, 255, 255, 0.85);
+    }
+    
+    .article-content h2, 
+    .article-content h3 {
+      color: white;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+    
+    .article-content h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      position: relative;
+      padding-bottom: 0.5rem;
+    }
+    
+    .article-content h2:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: var(--primary);
+      border-radius: 3px;
+    }
+    
+    .article-content ul {
+      list-style-type: disc;
+      padding-left: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .article-content li {
+      margin-bottom: 0.5rem;
+    }
+    
+    /* Typography */
+    h1, h2, h3, h4 {
+      font-weight: 700;
+      color: white;
+      margin-bottom: 1.5rem;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.75rem;
+      }
+      
+      .container {
+        padding: 0 15px;
+      }
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+  <!-- Header Section -->
+  <header class="py-4">
+    <div class="container flex items-center justify-between">
+      <a href="index.html" class="logo">Grand Horizon</a>
+      
+      <nav class="hidden md:flex space-x-6 lg:space-x-8">
+        <a href="index.html">Home</a>
+        <a href="rooms.html">Rooms</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="news.html">News</a>
+        <a href="index.html#reviews">Reviews</a>
+      </nav>
+      
+      <div class="flex items-center space-x-4">
+        <a href="login.html" class="text-white hover:text-blue-400 transition">Login</a>
+        <button id="menu-btn" class="md:hidden text-white focus:outline-none" onclick="toggleMobileMenu()">
+          <i class="fas fa-bars text-2xl"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="fixed inset-0 z-40 md:hidden opacity-0 invisible transition-all duration-400 transform translate-x-full bg-[#0a1a2b]">
+    <div class="flex justify-end p-6">
+      <button id="close-menu" class="text-white text-3xl focus:outline-none hover:text-blue-400 transition" onclick="toggleMobileMenu()">&times;</button>
+    </div>
+    <nav class="flex flex-col items-center space-y-8 mt-12 text-xl">
+      <a href="index.html" class="text-white hover:text-blue-400 transition" onclick="toggleMobileMenu()">Home</a>
+      <a href="rooms.html" class="text-white hover:text-blue-400 transition" onclick="toggleMobileMenu()">Rooms</a>
+      <a href="gallery.html" class="text-white hover:text-blue-400 transition" onclick="toggleMobileMenu()">Gallery</a>
+      <a href="news.html" class="text-white hover:text-blue-400 transition" onclick="toggleMobileMenu()">News</a>
+      <a href="index.html#reviews" class="text-white hover:text-blue-400 transition" onclick="toggleMobileMenu()">Reviews</a>
+      <div class="pt-8 border-t border-gray-700 w-3/4 text-center">
+        <a href="login.html" class="text-blue-400 hover:underline"><i class="fas fa-sign-in-alt mr-2"></i>Login</a>
+      </div>
+    </nav>
+  </div>
+
+  <main class="flex-grow pt-24 pb-12">
+    <div class="container">
+      <div class="max-w-3xl mx-auto">
+        <!-- Article Header -->
+        <div class="mb-8">
+          <span class="text-blue-400 text-sm font-semibold">Hotel Updates</span>
+          <h1 class="text-2xl md:text-3xl font-bold mt-2 mb-4">The Future of Hotel Stays: Emerging Trends in Hospitality</h1>
+          <div class="flex items-center text-gray-400 text-sm">
+            <span><i class="far fa-calendar-alt mr-1"></i> April 21, 2024</span>
+            <span class="mx-3">•</span>
+            <span><i class="far fa-clock mr-1"></i> 5 min read</span>
+          </div>
+        </div>
+        
+        <!-- Featured Image -->
+        <div class="rounded-lg overflow-hidden mb-8">
+          <img src="https://storage.googleapis.com/a1aa/image/7cdea077-9c8f-43de-4907-975d232c11b5.jpg" alt="Future Hotel Stays" class="w-full h-auto">
+        </div>
+        
+        <!-- Article Content -->
+        <div class="article-content">
+          <p class="font-semibold">
+            The hospitality industry is undergoing a significant transformation, driven by technological advancements and changing guest expectations. 
+            At Grand Horizon, we're at the forefront of these innovations to redefine luxury accommodations.
+          </p>
+          
+          <h2>Smart Room Technology</h2>
+          <p>
+            The hotel room of the future is intelligent and responsive. We're implementing IoT (Internet of Things) technology that allows guests to control 
+            lighting, temperature, curtains, and entertainment systems through voice commands or a mobile app. Imagine arriving at your room to find it 
+            already set to your preferred temperature, with the curtains opened to reveal the stunning city view.
+          </p>
+          
+          <div class="rounded-lg overflow-hidden my-6">
+            <img src="https://storage.googleapis.com/a1aa/image/df2e3f89-3b7e-42e8-0e07-e74086d0585e.jpg" alt="Smart Room" class="w-full h-auto">
+          </div>
+          
+          <h2>Contactless Experiences</h2>
+          <p>
+            The pandemic accelerated the adoption of contactless technologies, and these are here to stay. Our guests can now:
+          </p>
+          <ul>
+            <li>Check-in and check-out via our mobile app</li>
+            <li>Use digital keys to access their rooms</li>
+            <li>Order room service through in-room tablets</li>
+            <li>Request housekeeping or concierge services without phone calls</li>
+          </ul>
+          
+          <h2>Personalization Through AI</h2>
+          <p>
+            Artificial Intelligence is enabling unprecedented levels of personalization. Our system learns guest preferences over time, from pillow firmness 
+            to preferred minibar items. Returning guests will find their room automatically configured to their liking, with personalized welcome messages 
+            and recommendations for dining and activities based on past stays.
+          </p>
+          
+          <blockquote class="border-l-4 border-blue-500 pl-4 my-6 italic text-gray-300">
+            "The future of hospitality lies in creating seamless, personalized experiences that anticipate guest needs before they even articulate them." 
+            <span class="block font-semibold mt-2">- Sarah Johnson, Director of Guest Experience</span>
+          </blockquote>
+          
+          <h2>Sustainability Initiatives</h2>
+          <p>
+            Eco-conscious travelers are driving demand for sustainable hospitality options. We're implementing:
+          </p>
+          <ul>
+            <li>Energy-efficient smart lighting systems</li>
+            <li>Water-saving bathroom fixtures</li>
+            <li>Locally-sourced organic toiletries</li>
+            <li>Digital alternatives to printed materials</li>
+            <li>Zero-waste dining options</li>
+          </ul>
+          
+          <div class="rounded-lg overflow-hidden my-6">
+            <img src="https://storage.googleapis.com/a1aa/image/162f504c-778e-41a9-2390-625ceda4cdda.jpg" alt="Sustainable Hotel" class="w-full h-auto">
+          </div>
+          
+          <h2>Wellness-Focused Design</h2>
+          <p>
+            The lines between hotels and wellness retreats are blurring. Our newly designed rooms feature:
+          </p>
+          <ul>
+            <li>Air purification systems</li>
+            <li>Circadian lighting to support sleep cycles</li>
+            <li>Dedicated meditation spaces</li>
+            <li>In-room fitness equipment</li>
+            <li>Sleep-enhancing mattress technology</li>
+          </ul>
+          
+          <h2>What This Means for Our Guests</h2>
+          <p>
+            These innovations aren't just about technology for technology's sake. They're about removing friction from the guest experience and creating 
+            more meaningful, memorable stays. At Grand Horizon, we're committed to adopting innovations that genuinely enhance comfort and convenience 
+            while maintaining the human touch that defines true hospitality.
+          </p>
+        </div>
+        
+        <!-- Article Footer -->
+        <div class="border-t border-gray-700 pt-6 mt-8">
+          <div class="flex flex-wrap gap-2 mb-6">
+            <span class="bg-[rgba(255,255,255,0.1)] px-3 py-1 rounded-full text-sm">Technology</span>
+            <span class="bg-[rgba(255,255,255,0.1)] px-3 py-1 rounded-full text-sm">Innovation</span>
+            <span class="bg-[rgba(255,255,255,0.1)] px-3 py-1 rounded-full text-sm">Hospitality Trends</span>
+          </div>
+          
+          <div class="flex justify-between items-center">
+            <div class="flex items-center">
+              <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Author" class="w-10 h-10 rounded-full mr-3">
+              <div>
+                <h4 class="font-semibold">Emily Parker</h4>
+                <p class="text-gray-400 text-sm">Director of Innovation</p>
+              </div>
+            </div>
+            
+            <div class="flex space-x-4">
+              <a href="#" class="text-gray-400 hover:text-blue-400 transition" aria-label="Share on Facebook"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="text-gray-400 hover:text-blue-400 transition" aria-label="Share on Twitter"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="text-gray-400 hover:text-blue-400 transition" aria-label="Share on LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Related Articles -->
+        <div class="mt-16">
+          <h2 class="mb-6">Related Articles</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <a href="news-single.html" class="group">
+              <div class="flex items-start">
+                <img src="https://storage.googleapis.com/a1aa/image/0bc8d64e-cefe-4031-6ff7-09de60081d05.jpg" alt="Related Article" class="w-20 h-20 object-cover rounded mr-4">
+                <div>
+                  <h3 class="font-semibold group-hover:text-blue-400 transition">Exploring Smart Rooms</h3>
+                  <p class="text-gray-400 text-sm">March 6, 2024</p>
+                </div>
+              </div>
+            </a>
+            <a href="news-single.html" class="group">
+              <div class="flex items-start">
+                <img src="https://storage.googleapis.com/a1aa/image/162f504c-778e-41a9-2390-625ceda4cdda.jpg" alt="Related Article" class="w-20 h-20 object-cover rounded mr-4">
+                <div>
+                  <h3 class="font-semibold group-hover:text-blue-400 transition">New Spa Treatments</h3>
+                  <p class="text-gray-400 text-sm">January 15, 2024</p>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer Section -->
+  <footer class="bg-[#0a1a2b] py-12 mt-auto">
+    <div class="container">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <div>
+          <h3 class="text-white text-lg font-bold mb-4">Grand Horizon</h3>
+          <p class="text-gray-400 text-sm">Luxury accommodations with world-class amenities in the heart of the city.</p>
+          <div class="flex space-x-4 mt-4">
+            <a href="#" class="text-gray-400 hover:text-blue-400 transition" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="text-gray-400 hover:text-blue-400 transition" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="text-gray-400 hover:text-blue-400 transition" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-white text-lg font-bold mb-4">Quick Links</h3>
+          <ul class="space-y-2">
+            <li><a href="index.html" class="text-gray-400 hover:text-blue-400 text-sm transition">Home</a></li>
+            <li><a href="rooms.html" class="text-gray-400 hover:text-blue-400 text-sm transition">Rooms & Suites</a></li>
+            <li><a href="gallery.html" class="text-gray-400 hover:text-blue-400 text-sm transition">Photo Gallery</a></li>
+            <li><a href="news.html" class="text-gray-400 hover:text-blue-400 text-sm transition">Hotel News</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-white text-lg font-bold mb-4">Contact Us</h3>
+          <ul class="space-y-2 text-gray-400 text-sm">
+            <li class="flex items-start">
+              <i class="fas fa-map-marker-alt mt-1 mr-2 text-blue-400"></i>
+              <span>123 Hotel Street, City, Country</span>
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-phone-alt mr-2 text-blue-400"></i>
+              <span>+1 234 567 8900</span>
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-envelope mr-2 text-blue-400"></i>
+              <span>info@grandhorizon.com</span>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-white text-lg font-bold mb-4">Opening Hours</h3>
+          <ul class="space-y-2 text-gray-400 text-sm">
+            <li class="flex justify-between">
+              <span>Monday - Friday:</span>
+              <span>24 hours</span>
+            </li>
+            <li class="flex justify-between">
+              <span>Saturday - Sunday:</span>
+              <span>24 hours</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 pt-6 flex flex-col md:flex-row justify-between items-center text-gray-400 text-sm">
+        <p>&copy; 2024 Grand Horizon Hotel. All rights reserved.</p>
+        <div class="flex space-x-4 mt-4 md:mt-0">
+          <a href="#" class="hover:text-blue-400 transition">Privacy Policy</a>
+          <a href="#" class="hover:text-blue-400 transition">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button id="back-to-top" class="fixed bottom-8 right-8 w-12 h-12 rounded-full flex items-center justify-center hidden bg-gradient-to-br from-[#0d4a9d] to-[#1a5cb0] text-white shadow-lg hover:shadow-xl transition-all">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <script>
+    // Mobile menu toggle
+    function toggleMobileMenu() {
+      const mobileMenu = document.getElementById('mobile-menu');
+      mobileMenu.classList.toggle('opacity-0');
+      mobileMenu.classList.toggle('invisible');
+      mobileMenu.classList.toggle('translate-x-full');
+      
+      // Toggle body scroll
+      if (!mobileMenu.classList.contains('opacity-0')) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = 'auto';
+      }
+    }
+    
+    // Back to top button
+    const backToTopButton = document.getElementById('back-to-top');
+    
+    if (backToTopButton) {
+      window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+          backToTopButton.classList.remove('hidden');
+          backToTopButton.classList.add('flex');
+        } else {
+          backToTopButton.classList.add('hidden');
+          backToTopButton.classList.remove('flex');
+        }
+      });
+      
+      backToTopButton.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+  </script>
+</body>
